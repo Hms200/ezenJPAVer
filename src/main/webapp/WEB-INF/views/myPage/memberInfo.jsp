@@ -38,13 +38,13 @@
 						class="col font-weight-bold form-group text-dark pr-2">
 						이름 <input type="text"
 							class="form-control-plaintext col-12 rounded font-weight-normal border font-secondary px-1"
-							 name="user_name" value="${user.user_name}" readonly>
+							 name="userName" value="${user.userName}" readonly>
 					</div>
 					<div style="height: 65px;"
 						class="col font-weight-bold form-hroup text-dark">
 						아이디 <input type="text"
 							class="form-control-plaintext col-12 rounded font-weight-normal border font-secondary px-1"
-							 name="user_id" value="${user.user_id}" readonly>
+							 name="userId" value="${user.userId}" readonly>
 					</div>
 				</div>
 			</div>
@@ -58,7 +58,7 @@
 						class="form-control col-12 rounded font-weight-nomal my-1 nullcheck" id="pw1"
 						placeholder="변경할 비밀번호를 입력해 주세요">
 						 <input type="password"
-						class="form-control col-12 rounded font-weight-nomal nullcheck" id="pw2" name="user_pw"
+						class="form-control col-12 rounded font-weight-nomal nullcheck" id="pw2" name="userPw"
 						placeholder="비밀번호 확인 입력을 해주세요">
 						<div id="al1" style="color: red; display: none;" >*비밀번호가 서로 다릅니다*</div>
            			    <div id="al2" style="color: green; display: none;">*비밀번호가 일치합니다*</div>
@@ -67,13 +67,13 @@
 				<div class="my-3 col-12 font-weight-bold form-group text-dark">
 					이메일 <input type="email"
 						class="form-control col-12 rounded font-weight-nomal nullcheck"
-						name="user_email" value="${user.user_email}">
+						name="userEmail" value="${user.userEmail}">
 				</div>
 				<!-- 전화번호 -->
 				<div class="my-3 col-12 font-weight-bold form-group text-dark">
 					전화번호 <input type="text"
 						class="form-control col-12 rounded font-weight-nomal nullcheck"
-						name="user_phone" value="${user.user_phone }">
+						name="userPhone" value="${user.userPhone }">
 						
 				</div>
 				<!-- 주소 -->
@@ -94,7 +94,7 @@
         </div> -->
 				<div class="text-left font-weight-bold col-12 mt-2">주소<input type="text"
 						class="form-control col-12 rounded font-weight-nomal nullcheck"
-						name="user_address" value="${user.user_address }" placeholder="주소를 확인해주세요">
+						name="userAddress" value="${user.userAddress }" placeholder="주소를 확인해주세요">
 						<span class="p1 float-right" onclick="popupHideAndShow('changeAddress')" style=" cursor: pointer;">
 				          주소 변경하기
 				          <img src="/img/icon/down.png" alt="" class="img-fluid" style="width: 12px;height: 12px;">
@@ -147,7 +147,7 @@
     })
     $('button[type=submit]').click(function(){
     const address = $('#sample6_address').val()+$('#sample6_detailAddress').val();
-    $('input[name=user_address]').attr('value',address);
+    $('input[name=userAddress]').attr('value',address);
     })
   });
   
@@ -192,7 +192,7 @@
 	  const detailAddress = document.getElementById('sample6_detailAddress').value;
 	  mergedAddress = postCode + address +" "+ detailAddress;
 	  
-	  const changeTarget = document.getElementsByName('user_address');
+	  const changeTarget = document.getElementsByName('userAddress');
 	  for(i=0; i<changeTarget.length; i++){
 		  changeTarget[i].value = mergedAddress;
 	  }
