@@ -24,7 +24,7 @@ window.onload = bedgeHideAndShow();
 function bedgeHideAndShow() {
     const bedge = document.getElementById('bedge');
     let bedgeNumber = document.getElementById('bedgeNumber').innerText;
-    if(bedgeNumber == '0' || bedgeNumber == '' || bedgeNumber == null){
+    if(bedgeNumber === '0' || bedgeNumber === '' || bedgeNumber == null){
         bedge.classList.remove("d-block");
         bedge.classList.add("d-none");
 
@@ -39,11 +39,11 @@ function nullChecker(){
     const target = document.getElementsByClassName('nullcheck');
 
     for(i=0; i<target.length; i++){
-        if(target[i].value == ''){
+        if(target[i].value === ''){
             alert(target[i].placeholder);
             target[i].focus();
             return false;
-        }else if(target[i].type == 'checkbox' && target[i].checked == false){
+        }else if(target[i].type === 'checkbox' && target[i].checked === false){
             alert('채크사항을 확인 해 주세요');
             return false;
         }

@@ -1,5 +1,6 @@
 package com.ezenjpa.ezenjpaver.controller;
 
+import com.ezenjpa.ezenjpaver.DTO.UserDTO;
 import com.ezenjpa.ezenjpaver.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,20 @@ public class LoginController {
                          @RequestParam("user_email")String user_email){
         log.info("id : {}, 이름 : {}, email : {} 로 비밀번호 찾기를 시도합니다.", user_id, user_name, user_email);
         return loginService.findPW(user_id, user_name, user_email);
+    }
+
+    @GetMapping("idCheckAjax")
+    @ResponseBody
+    public int idCheckAjax(@RequestParam("user_id")String user_id){
+        log.info("{}가 존재하는지 검사합니다.",user_id);
+        return loginService.checkDuplicationOfId(user_id);
+    }
+
+    @PostMapping("joinAction")
+    @ResponseBody
+    public String join(@ModelAttribute UserDTO userDTO){
+        log.info("입력받은 정보로 회원가입을 시도합니다.");
+        return loginService.join(userDTO);
     }
 
 }
