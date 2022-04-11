@@ -9,4 +9,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Long countUserEntitiesByUserIdxAndCartEntitiesNotNull(long userIdx);
     // id로 찾기
     UserEntity findByUserId(String userID);
+    // id와 email로 찾기
+    UserEntity findByUserNameAndUserEmail(String userName, String userEmail);
 }

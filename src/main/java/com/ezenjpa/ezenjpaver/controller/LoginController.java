@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
@@ -48,6 +48,14 @@ public class LoginController {
             return "login/login";
         }
         return "login/quit";
+    }
+
+    @GetMapping("idFindAction")
+    @ResponseBody
+    public String findId(@RequestParam("user_name")String user_name,
+                         @RequestParam("user_email")String user_email){
+        log.info("이름 : {}, email : {} 로 ID를 검색합니다.", user_name, user_email);
+        return loginService.findId(user_name, user_email);
     }
 
 }
