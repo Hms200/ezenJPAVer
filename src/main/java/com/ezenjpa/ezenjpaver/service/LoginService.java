@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import javax.swing.text.html.Option;
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
 
 @Service
+@Transactional
 @Slf4j
 public class LoginService {
 
