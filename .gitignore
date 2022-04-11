@@ -5,7 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 application.properties
-.ds_store
+.DS_Store
 
 ### STS ###
 .apt_generated
