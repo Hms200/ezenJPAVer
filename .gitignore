@@ -4,7 +4,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-application.properties
 .DS_Store
 
 ### STS ###
@@ -37,4 +36,4 @@ out/
 
 ### VS Code ###
 .vscode/
-src/main/resources/application.properties
+!**/src/main/resources/application.properties
