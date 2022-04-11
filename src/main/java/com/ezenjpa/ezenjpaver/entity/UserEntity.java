@@ -1,5 +1,6 @@
 package com.ezenjpa.ezenjpaver.entity;
 
+import com.ezenjpa.ezenjpaver.DTO.UserDTO;
 import com.ezenjpa.ezenjpaver.enums.UserProvider;
 import lombok.*;
 
@@ -66,4 +67,19 @@ public class UserEntity {
     // 연관관계 mapping - cart
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CartEntity> cartEntities;
+
+    // converter
+    public UserDTO convertToUserDTO(UserEntity userEntity){
+        return UserDTO.builder()
+                .userIdx(userEntity.getUserIdx())
+                .userId(userEntity.getUserId())
+                .userName(userEntity.getUserName())
+                .userEmail(userEntity.getUserEmail())
+                .userPhone(userEntity.getUserPhone())
+                .userAddress(userEntity.getUserAddress())
+                .userProvider(userEntity.getUserProvider().name())
+                .joinDate(userEntity.getJoinDate())
+                .userPw(userEntity.getUserPw())
+                .build();
+    }
 }
