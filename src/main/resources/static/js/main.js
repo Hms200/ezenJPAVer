@@ -186,7 +186,7 @@ function idCheck() {
 	// 아이디 유효성 검사(1보다 같거나 크면 중복 / 0 이면 중복안됨)
 	$.ajax(
 			{
-				url: 'http://localhost:8085/login/idCheckAjax?user_id='+ user_id,	
+				url: 'idCheckAjax?user_id='+ user_id,
 	    		type: 'get',
 	    		success: function(data) {
 	    			console.log('통신 성공, data:' + data);

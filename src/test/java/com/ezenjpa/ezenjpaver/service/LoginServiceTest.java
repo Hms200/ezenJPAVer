@@ -39,7 +39,7 @@ class LoginServiceTest {
 
         Optional<UserEntity> userId = Optional.ofNullable(userRepository.findByUserNameAndUserEmail(user_name, user_email));
 
-        result = userId.map(userEntity -> userEntity.getUserId())
+        result = userId.map(UserEntity::getUserId)
                 .orElse("not found");
 
         Assertions.assertEquals("authtest", result);
