@@ -85,4 +85,9 @@ public class LoginService {
         return "<script>alert('등록되었습니다.');location.href='login';</script>";
     }
 
+    // 회원탈퇴
+    public void quit(String user_idx){
+        userRepository.deleteById(Long.valueOf((user_idx)));
+    }
+
 }

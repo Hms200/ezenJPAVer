@@ -65,10 +65,15 @@ class LoginServiceTest {
             result = user.getUserPw();
             Assertions.assertEquals(encoded,result);
         }
+    }
 
-
-
-
+    @Test
+    @Comment("회원탈퇴 테스트")
+    void quit(){
+        String user_idx = "222";
+        userRepository.deleteById(Long.valueOf(user_idx));
+        Optional<UserEntity> user = userRepository.findById(Long.valueOf(user_idx));
+        Assertions.assertTrue(user.isEmpty());
     }
 
 

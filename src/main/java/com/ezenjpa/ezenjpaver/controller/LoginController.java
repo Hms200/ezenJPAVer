@@ -82,4 +82,11 @@ public class LoginController {
         return loginService.join(userDTO);
     }
 
+    @GetMapping("quitAction")
+    @ResponseBody
+    public String quit(@RequestParam String user_idx){
+        log.info("user Idx를 이용하여 회원정보를 삭제합니다.");
+        return "<script>location.href='/';</script>";
+    }
+
 }
