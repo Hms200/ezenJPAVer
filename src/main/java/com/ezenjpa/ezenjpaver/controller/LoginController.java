@@ -58,4 +58,13 @@ public class LoginController {
         return loginService.findId(user_name, user_email);
     }
 
+    @GetMapping("pwFindAction")
+    @ResponseBody
+    public String findPW(@RequestParam("user_id")String user_id,
+                         @RequestParam("user_name")String user_name,
+                         @RequestParam("user_email")String user_email){
+        log.info("id : {}, 이름 : {}, email : {} 로 비밀번호 찾기를 시도합니다.", user_id, user_name, user_email);
+        return loginService.findPW(user_id, user_name, user_email);
+    }
+
 }
