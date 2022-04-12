@@ -12,6 +12,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/*
+*  DTO에 담긴 정보로 Entity의 내용을 update 해줌.
+*
+*  연관관계가 mapping 된 field의 entity정보를 가져오기 위해서는 해당 entity를 가져올 repository 에
+*  getBy**Idx 가 만들어져 있어야 함. -> 새로운 entity 내용으로 db insert 가능.
+*
+* */
 @Component
 @Slf4j
 public class EntityUpdateUtil {
@@ -52,7 +59,7 @@ public class EntityUpdateUtil {
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
-                        // update 할 field가 Entity형 인 경우 Repository 호출하여 join된 Entity 가져와서 setter로 update 할 entity에 넣어줌
+        // update 할 field가 Entity형 인 경우 Repository 호출하여 join된 Entity 가져와서 setter로 update 할 entity에 넣어줌
                     }if(method.getName().contains("set") && method.getName().contains("Entity") && method.getName().toUpperCase(Locale.ROOT).contains(name.replace("IDX",""))){
                         String repo = k.replace("Idx", "");
                         repo = repo.substring(0,1).toUpperCase() + repo.substring(1);
