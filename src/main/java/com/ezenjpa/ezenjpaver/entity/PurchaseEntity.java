@@ -1,5 +1,6 @@
 package com.ezenjpa.ezenjpaver.entity;
 
+import com.ezenjpa.ezenjpaver.enums.Statement;
 import lombok.*;
 
 import javax.persistence.*;

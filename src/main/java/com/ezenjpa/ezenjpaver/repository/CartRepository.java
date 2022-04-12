@@ -13,4 +13,9 @@ public interface CartRepository extends JpaRepository<CartEntity, Long> {
     @Query(name = "purchaseListForMember", nativeQuery = true)
     List<PurchaseListVO> makingPurchaseListForMyPage(@Param("userIdx") Long userIdx);
 
+    @Query(name = "purchaseListForMemberByCat", nativeQuery = true)
+    List<PurchaseListVO> makingPurchaseListForMyPageByCat(@Param("userIdx") Long userIdx,
+                                                          @Param("statement") String statement);
+
+
 }

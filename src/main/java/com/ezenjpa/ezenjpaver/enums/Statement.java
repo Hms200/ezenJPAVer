@@ -17,9 +17,27 @@ public enum Statement {
     CHANGE_ASKED(6,"교환신청"),
     REFUND_ACCEPTED(7,"반품접수"),
     CHANGE_ACCEPTED(8,"교환접수"),
-    CANCEL(9,"주문취소");
+    CANCEL(9,"주문취소"),
+    DONE(10,"완료");
 
     private int code;
     private String description;
 
+    public static Statement desriptionOf(String description){
+        for(Statement stmt : Statement.values()){
+            if(stmt.getDescription().equals(description)){
+                return stmt;
+            }
+        }
+        return null;
+    }
+
+    public static Statement getStatementByCode(int code){
+        for(Statement stmt : Statement.values()){
+            if(stmt.getCode() == code){
+                return stmt;
+            }
+        }
+        return null;
+    }
 }

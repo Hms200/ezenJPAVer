@@ -3,6 +3,7 @@ package com.ezenjpa.ezenjpaver.service;
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
 import com.ezenjpa.ezenjpaver.VO.PurchaseListVO;
 import com.ezenjpa.ezenjpaver.entity.UserEntity;
+import com.ezenjpa.ezenjpaver.enums.Statement;
 import com.ezenjpa.ezenjpaver.repository.CartRepository;
 import com.ezenjpa.ezenjpaver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +58,14 @@ public class MyPageService {
     public Model purchaseList(Model model){
         Long userIdx = Long.valueOf((String) session.getAttribute("userIdx")) ;
         List<PurchaseListVO> purchaseList = cartRepository.makingPurchaseListForMyPage(userIdx);
+        model.addAttribute("List", purchaseList);
+        return model;
+    }
+    //purchase list filter
+    public Model purchaseListFilter(Model model, Integer cat){
+        Long userIdx = Long.valueOf((String) session.getAttribute("userIdx"));
+        Statement stmt = Statement.getStatementByCode(cat);
+        List<PurchaseListVO> purchaseList = cartRepository.makingPurchaseListForMyPageByCat(userIdx,stmt.getDescription());
         model.addAttribute("List", purchaseList);
         return model;
     }

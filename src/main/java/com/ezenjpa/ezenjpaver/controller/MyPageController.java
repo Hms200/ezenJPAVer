@@ -44,7 +44,9 @@ public class MyPageController {
     @RequestMapping("purchaseList")
     public String purchaseList(Model model, @RequestParam(name = "cat", required = false) Integer cat){
         if(cat == null){
-            myPageService.purchaseList(model);
+           model = myPageService.purchaseList(model);
+        }else {
+            model = myPageService.purchaseListFilter(model, cat);
         }
         return "myPage/purchaseList";
     }

@@ -1,4 +1,4 @@
-package com.ezenjpa.ezenjpaver.Config;
+package com.ezenjpa.ezenjpaver.config;
 
 import com.ezenjpa.ezenjpaver.security.CustomAuthFailureHandler;
 import com.ezenjpa.ezenjpaver.security.CustomFormAuthenticationProvider;
