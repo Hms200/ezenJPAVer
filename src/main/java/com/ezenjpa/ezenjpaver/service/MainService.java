@@ -53,7 +53,7 @@ public class MainService {
 
         if(userIdx != null){
             try {
-                cartBedgeNum = userRepository.countUserEntitiesByUserIdxAndCartEntitiesNotNull(userIdx);
+                cartBedgeNum = userRepository.countUserEntitiesByUserIdxAndCartEntitiesNotNull(Long.valueOf(userIdx));
                 log.info("Number Of Cart-Bedge = {}", cartBedgeNum);
             }catch (NullPointerException e){
                 log.error("빈 카트 ");

@@ -1,9 +1,12 @@
 package com.ezenjpa.ezenjpaver.service;
 
+import com.ezenjpa.ezenjpaver.DTO.ReviewDTO;
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
 import com.ezenjpa.ezenjpaver.VO.PurchaseListVO;
+import com.ezenjpa.ezenjpaver.entity.ReviewEntity;
 import com.ezenjpa.ezenjpaver.entity.UserEntity;
 import com.ezenjpa.ezenjpaver.repository.CartRepository;
+import com.ezenjpa.ezenjpaver.repository.ReviewRepository;
 import com.ezenjpa.ezenjpaver.repository.UserRepository;
 import org.hibernate.annotations.Comment;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.transaction.Transactional;
@@ -31,6 +35,10 @@ class MyPageServiceTest {
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
     CartRepository cartRepository;
+    @Autowired
+    ReviewRepository reviewRepository;
+    @Autowired
+    ApplicationContext context;
 
 
     @Test
@@ -82,15 +90,14 @@ class MyPageServiceTest {
     @Test
     @Comment("reflection 이용해서 update util 만들기")
     void updater() throws InvocationTargetException, IllegalAccessException {
-        UserDTO user = UserDTO.builder()  // param obj
-                .userPw("1234")
-                .userName("가나다")
-                .userEmail("test@test")
-                .userAddress("서울시")
-                .userPhone("000-0000-0000")
+        ReviewDTO review = ReviewDTO.builder()
+                .reviewStar(5)
+                .reviewContents("ss")
+                .userIdx(222L)
+                .goodsIdx(95L)
                 .build();
         // Reflection 으로 DTO filed, getter 가져와서 HashMap에 mapping
-        Class<?> cls = user.getClass();
+        Class<?> cls = review.getClass();
         Field[] fields = cls.getDeclaredFields();
         Map<String, Object> mapping = new HashMap<>();
         Method[] methods = cls.getDeclaredMethods();
@@ -101,15 +108,15 @@ class MyPageServiceTest {
             for(Method method : methods){
                 method.setAccessible(true);
                 if(name.toUpperCase(Locale.ROOT).equals(method.getName().replace("get", "").toUpperCase(Locale.ROOT))){
-                    mapping.put(name, method.invoke(user));
+                    mapping.put(name, method.invoke(review));
                 }
             }
         }
 
-        UserEntity userEntity = userRepository.getById(222L);
-        System.out.println(userEntity.toString());
+        ReviewEntity reviewEntity = reviewRepository.getById(108L);
+        System.out.println(reviewEntity.toString());
         // Reflection 으로 entity setter 가져와서 update 할 field 만 가려내 setter 실행
-        Class<?> entityCls = userEntity.getClass();
+        Class<?> entityCls = reviewEntity.getClass();
         Method[] setters = entityCls.getDeclaredMethods();
 
 
@@ -120,10 +127,29 @@ class MyPageServiceTest {
                     setter.setAccessible(true);
                     if(name.equals(setter.getName().replace("set", "").toUpperCase(Locale.ROOT))){
                         try {
-                            setter.invoke(userEntity, v);
+                            setter.invoke(reviewEntity, v);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }if(setter.getName().contains("set") && setter.getName().contains("Entity") && setter.getName().toUpperCase(Locale.ROOT).contains(name.replace("IDX",""))){
+                        String repo = k.replace("Idx", "");
+                        repo = repo.substring(0,1).toUpperCase() + repo.substring(1);
+                        String methodname = k.substring(0,1).toUpperCase() + k.substring(1);
+                        try {
+                            Class<?> clss = Class.forName("com.ezenjpa.ezenjpaver.repository." + repo + "Repository");
+                            System.out.println(clss.getName());
+                            Class<?> entitycls = Class.forName("com.ezenjpa.ezenjpaver.entity."+ repo + "Entity");
+                            Object targetentity = context.getBean(clss).getClass().getDeclaredMethod("getBy"+methodname, Long.class).invoke(context.getBean(clss), v);
+                            setter.invoke(reviewEntity,  entitycls.cast(targetentity));
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
                     }
@@ -131,7 +157,7 @@ class MyPageServiceTest {
             }
         });
 
-        System.out.println(userEntity.toString());
+        System.out.println(reviewEntity);
     }
 
     @Test
@@ -140,5 +166,26 @@ class MyPageServiceTest {
         Long userIdx = 222L;
         List<PurchaseListVO> list = cartRepository.makingPurchaseListForMyPage(userIdx);
         System.out.println(list.toString());
+    }
+
+    @Test
+    @Comment("java reflection test")
+    void reflection() {
+
+        Long userIdx = 2L;
+        UserEntity userEntity = new UserEntity();
+
+
+        try {
+            System.out.println(UserRepository.class.getDeclaredMethod("getByUserIdx", Long.class).getName());
+            userEntity = (UserEntity) userRepository.getClass().getDeclaredMethod("getByUserIdx", Long.class).invoke(userRepository, userIdx);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+
+        }
+        System.out.println(userEntity);
     }
 }

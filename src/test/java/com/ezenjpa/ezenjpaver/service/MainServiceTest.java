@@ -61,7 +61,7 @@ class MainServiceTest {
         if(userIdx != null){
 
             try {
-                cartBedgeNum = userRepository.countUserEntitiesByUserIdxAndCartEntitiesNotNull(userIdx);
+                cartBedgeNum = userRepository.countUserEntitiesByUserIdxAndCartEntitiesNotNull(Long.valueOf(userIdx));
 
             }catch (NullPointerException e){
 

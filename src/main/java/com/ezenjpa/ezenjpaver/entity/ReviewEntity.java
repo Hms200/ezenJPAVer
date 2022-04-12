@@ -1,8 +1,10 @@
 package com.ezenjpa.ezenjpaver.entity;
 
+import com.ezenjpa.ezenjpaver.repository.UserRepository;
 import lombok.*;
 
 import javax.persistence.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 @Entity
@@ -46,6 +48,7 @@ import java.util.Date;
                                 @ColumnResult(name = "goods_name", type = String.class),
                                 @ColumnResult(name = "review_img", type = String.class)})})
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -60,10 +63,12 @@ public class ReviewEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_IDX")
+    @ToString.Exclude
     private UserEntity userEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GOODS_IDX")
+    @ToString.Exclude
     private GoodsEntity goodsEntity;
 
     @Column(name = "REVIEW_CONTENTS")
@@ -85,5 +90,6 @@ public class ReviewEntity {
     @Column(name = "REVIEW_REPLY_DATE")
     @Temporal(TemporalType.DATE)
     private Date reviewReplyDate;
+
 
 }

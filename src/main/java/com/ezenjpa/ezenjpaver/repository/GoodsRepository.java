@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface GoodsRepository extends JpaRepository<GoodsEntity, Long> {
+
+    GoodsEntity getByGoodsIdx(Long goodsIdx);
     // 판매중인 상품 중 판매량 상위 10개
     List<GoodsEntity> getTop10ByGoodsOnSaleOrderByGoodsPurchasedDesc(int goodsOnSale);
     // 해당 이벤트가 걸려있고 판매중인 상품
