@@ -37,6 +37,7 @@ public class EntityUpdateUtil {
 
         Map<String, Object> updateData = new HashMap<>();
 
+        log.info("{}에서 정보를 가져옵니다.", dtoCls.getName().replace("com.ezenjpa.ezenjpaver.DTO.", ""));
         for(Field field : dtoFields){
             field.setAccessible(true);
             String name = field.getName();
@@ -48,6 +49,7 @@ public class EntityUpdateUtil {
             }
         }
         // Reflection 으로 entity setter 가져와서 update 할 field 만 가려내 setter 실행
+        log.info("{}를 가져온 정보로 업데이트 합니다.",entity.getClass().getName().replace("com.ezenjpa.ezenjpaver.entity.", ""));
         updateData.forEach((k,v) -> {
             if(v != null){
                 String name = k.toUpperCase();
