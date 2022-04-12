@@ -49,6 +49,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class ReviewEntity {
 
     @Id
@@ -57,11 +58,11 @@ public class ReviewEntity {
     @Column(name = "REVIEW_IDX")
     private Long reviewIdx;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_IDX")
     private UserEntity userEntity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GOODS_IDX")
     private GoodsEntity goodsEntity;
 
@@ -84,9 +85,5 @@ public class ReviewEntity {
     @Column(name = "REVIEW_REPLY_DATE")
     @Temporal(TemporalType.DATE)
     private Date reviewReplyDate;
-
-    // 양방향 연관관계 mapping - reviewImgs
-    @OneToOne(mappedBy = "reviewEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    ReviewImgsEntity reviewImgsEntity;
 
 }

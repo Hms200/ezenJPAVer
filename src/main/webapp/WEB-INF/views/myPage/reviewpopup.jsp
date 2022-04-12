@@ -46,7 +46,7 @@
 			<div class="col-12 border rounded custom-flie d-flex flex-column justify-content-center align-items-center p-2 font-primary">
 				<span class="mr-3">이미지 등록</span>
 				<input type="file" class="custom-flie-input " name="reviewFile" id="reviewImg" accept="image/*">
-				<input type="hidden" name="review_idx" value="">
+				<input type="hidden" name="reviewIdx" value="">
 				<div class="change_img"><img src="" class="mt-2"/></div>
 			</div>
 		</form>
@@ -56,7 +56,7 @@
 				<div class="float-right mr-3">
 					<select class="form-select form-control rounded text-dark my-2 font-secondary pl-1"
 						style="width: 85px;"
-						aria-label="별점" name="review_star" id="review_star">
+						aria-label="별점" name="reviewStar" id="review_star">
 						<option value="" disabled selected>별점</option>
 						<option value="1">1</option>
 						<option value="2">2</option>
@@ -68,11 +68,11 @@
 				
 				<!-- 리뷰내용 -->
 				<div class="container font-primary mb-5 mt-2">
-					<textarea name="review_contents" id="review" cols="50" rows="10"
+					<textarea name="reviewContents" id="review" cols="50" rows="10"
 						class="form-control form-control-lg border border-color col-12 font-primary"
 						style="height: 200px;" placeholder="리뷰를 입력해 주세요" id="review_content"></textarea>
-					<input type="hidden" name="user_idx" id="user_idx" value="${ user_idx }">
-					<input type="hidden" name="goods_idx" id="goods_idx" value="${ goods_idx }">
+					<input type="hidden" name="userIdx" id="user_idx" value="${ user_idx }">
+					<input type="hidden" name="goodsIdx" id="goods_idx" value="${ goods_idx }">
 				</div>
 			
 			</form>

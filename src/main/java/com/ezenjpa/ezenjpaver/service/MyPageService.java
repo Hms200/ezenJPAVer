@@ -1,22 +1,27 @@
 package com.ezenjpa.ezenjpaver.service;
 
+import com.ezenjpa.ezenjpaver.DTO.ReviewDTO;
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
 import com.ezenjpa.ezenjpaver.VO.PurchaseListVO;
 import com.ezenjpa.ezenjpaver.entity.PurchaseEntity;
+import com.ezenjpa.ezenjpaver.entity.ReviewEntity;
+import com.ezenjpa.ezenjpaver.entity.ReviewImgsEntity;
 import com.ezenjpa.ezenjpaver.entity.UserEntity;
+import com.ezenjpa.ezenjpaver.enums.ImgCat;
 import com.ezenjpa.ezenjpaver.enums.Statement;
-import com.ezenjpa.ezenjpaver.repository.CartRepository;
-import com.ezenjpa.ezenjpaver.repository.PurchaseRepository;
-import com.ezenjpa.ezenjpaver.repository.UserRepository;
+import com.ezenjpa.ezenjpaver.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Slf4j
@@ -31,11 +36,19 @@ public class MyPageService {
     @Autowired
     PurchaseRepository purchaseRepository;
     @Autowired
+    ReviewRepository reviewRepository;
+    @Autowired
+    ReviewImgsRepository reviewImgsRepository;
+    @Autowired
+    GoodsRepository goodsRepository;
+    @Autowired
     HttpSession session;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
     EntityUpdateUtil updateUtil;
+    @Autowired
+    FileService fileService;
 
     //member info
     public Model memberInfo(Model model){
@@ -88,5 +101,34 @@ public class MyPageService {
         log.info("{} (으)로 주문상태를 변경합니다.", stmt.getDescription());
         purchase.setPurchaseStatement(stmt.getDescription());
         purchaseRepository.save(purchase);
+    }
+
+    // 리뷰 작성
+    public Long insertReview(ReviewDTO review) throws InvocationTargetException, IllegalAccessException {
+      ReviewEntity newReview = ReviewEntity.builder()
+              .userEntity(userRepository.getById(review.getUserIdx()))
+              .goodsEntity(goodsRepository.getById(review.getGoodsIdx()))
+              .reviewStar(review.getReviewStar())
+              .reviewContents(review.getReviewContents())
+              .reivewDate(Date.from(Instant.now()))
+              .reviewIsReplied(0)
+              .build();
+      newReview = reviewRepository.save(newReview);
+      return newReview.getReviewIdx();
+
+    }
+    // 리뷰 이미지 등록
+    public void uploadeImg(MultipartFile multipartFile, Long reviewIdx) throws Exception {
+        if(multipartFile.isEmpty()){
+            log.info("파일이 없습니다.");
+        }else {
+            String img = fileService.fileUploader(ImgCat.REVIEWS, multipartFile);
+            log.info("이미지 저장됨. 경로 = {}", img);
+            ReviewImgsEntity reviewImg = ReviewImgsEntity.builder()
+                    .reviewImg(img)
+                    .reviewEntity(reviewRepository.getById(reviewIdx))
+                    .build();
+            reviewImgsRepository.save(reviewImg);
+        }
     }
 }

@@ -41,7 +41,7 @@ public class EntityUpdateUtil {
                 String name = k.toUpperCase(Locale.ROOT);
                 for(Method method : entityMethods){
                     method.setAccessible(true);
-                    if(name.equals(method.getName().replace("set", "").toUpperCase(Locale.ROOT))){
+                    if(method.getName().contains("set") && method.getName().toUpperCase(Locale.ROOT).contains(name)){
                         try {
                             method.invoke(entity, v);
                         } catch (IllegalAccessException e) {
@@ -49,6 +49,7 @@ public class EntityUpdateUtil {
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
                         }
+
                     }
                 }
             }

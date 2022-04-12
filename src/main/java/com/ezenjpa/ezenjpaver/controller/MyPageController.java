@@ -1,5 +1,6 @@
 package com.ezenjpa.ezenjpaver.controller;
 
+import com.ezenjpa.ezenjpaver.DTO.ReviewDTO;
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
 import com.ezenjpa.ezenjpaver.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -63,6 +65,22 @@ public class MyPageController {
         model.addAttribute("user_idx",user_idx);
         model.addAttribute("goods_idx", goods_idx);
         return "myPage/reviewpopup";
+    }
+
+    @PostMapping("reviewWriteAction")
+    @ResponseBody
+    public Long writeReview(@RequestBody ReviewDTO review) throws InvocationTargetException, IllegalAccessException {
+        log.info("다음 내용으로 리뷰를 작성합니다. {}",review.toString());
+        return myPageService.insertReview(review);
+    }
+
+    @PostMapping("uploadReviewImgAction")
+    @ResponseBody
+    public String uploadReviewImg(@RequestParam("reviewFile") MultipartFile multipartFile,
+                                  @RequestParam("reviewIdx") Long reviewIdx) throws Exception {
+        log.info("리뷰 이미지 저장을 시도합니다.");
+        myPageService.uploadeImg(multipartFile, reviewIdx);
+        return "<script>alert('리뷰등록 성공'); location.href='../myPage/purchaseList'; </script>";
     }
 
 }

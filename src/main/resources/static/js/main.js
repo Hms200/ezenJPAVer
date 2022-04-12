@@ -274,12 +274,8 @@ function reviewContentAction() {
 		processData: false,
 		data: formData,
 		success: function(result){
-			if(result == false){
-				alert('등록에 실패하였습니다.');
-				return false;
-			}
-			console.log('등록 성공 review_idx ='+result);
-			document.getElementsByName('review_idx')[0].value = result;
+			console.log('등록 성공 reviewIdx ='+result);
+			document.getElementsByName('reviewIdx')[0].value = result;
 			multiSubmit(formName = 'reviewImg', formAction = 'uploadReviewImgAction');
 		},
 		error: function(){return false},

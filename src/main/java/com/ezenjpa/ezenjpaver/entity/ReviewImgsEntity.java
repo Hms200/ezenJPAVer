@@ -18,8 +18,8 @@ public class ReviewImgsEntity {
     @Column(name = "REVIEW_IMG")
     private String reviewImg;
 
-    @OneToOne
-    @JoinColumn(name = "REVIEW_IDX")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "review_idx")
     private ReviewEntity reviewEntity;
 
 }
