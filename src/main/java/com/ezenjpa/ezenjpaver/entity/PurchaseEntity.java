@@ -25,12 +25,14 @@ public class PurchaseEntity {
     @Column(name = "PURCHASE_IDX")
     private Long purchaseIdx;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CART_LIST_IDX")
+    @ToString.Exclude
     private CartListEntity cartListEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_IDX")
+    @ToString.Exclude
     private UserEntity userEntity;
 
     @Column(name = "PURCHASE_TOTAL_PRICE")

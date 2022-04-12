@@ -93,15 +93,15 @@
 							</div>
 							<div
 								class="col-12 border rounded d-flex flex-row justify-content-between form-control my-3 ">
-								<button type="submit" value="환불신청" class="p-0 font-primary" name="AskRefund"
+								<button type="button" value="환불신청" class="p-0 font-primary" name="AskRefund"
 									
-									onclick="multiSubmit(formName='purchasehistoryForm', formAction='purchaseRefundAction')">환불신청</button>
-								<button type="submit" value="교환신청" class="p-0 font-primary" name="AskChange"
+									onclick="location.href='../myPage/changestatement?userIdx=${list.userIdx}&ask=refund'">환불신청</button>
+								<button type="button" value="교환신청" class="p-0 font-primary" name="AskChange"
 									
-									onclick="multiSubmit(formName='purchasehistoryForm', formAction='purchaseChangeAction')">교환신청</button>
-								<button type="submit" value="취소신청" class="p-0  font-primary" name="AskCancle"
+									onclick="location.href='../myPage/changestatement?userIdx=${list.userIdx}&ask=change'">교환신청</button>
+								<button type="button" value="취소신청" class="p-0  font-primary" name="AskCancel"
 								
-									onclick="multiSubmit(formName='purchasehistoryForm', formAction='purchaseCancleAction')">취소신청</button>
+									onclick="location.href='../myPage/changestatement?userIdx=${list.userIdx}&ask=cancel'">취소신청</button>
 								<input type="hidden" name="purchase_idx" value="${list.purchaseIdx }" >
 							</div>
 						</div>

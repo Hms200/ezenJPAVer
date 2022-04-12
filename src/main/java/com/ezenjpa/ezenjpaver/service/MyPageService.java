@@ -2,9 +2,11 @@ package com.ezenjpa.ezenjpaver.service;
 
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
 import com.ezenjpa.ezenjpaver.VO.PurchaseListVO;
+import com.ezenjpa.ezenjpaver.entity.PurchaseEntity;
 import com.ezenjpa.ezenjpaver.entity.UserEntity;
 import com.ezenjpa.ezenjpaver.enums.Statement;
 import com.ezenjpa.ezenjpaver.repository.CartRepository;
+import com.ezenjpa.ezenjpaver.repository.PurchaseRepository;
 import com.ezenjpa.ezenjpaver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class MyPageService {
     UserRepository userRepository;
     @Autowired
     CartRepository cartRepository;
+    @Autowired
+    PurchaseRepository purchaseRepository;
     @Autowired
     HttpSession session;
     @Autowired
@@ -57,6 +61,7 @@ public class MyPageService {
     //purchase list
     public Model purchaseList(Model model){
         Long userIdx = Long.valueOf((String) session.getAttribute("userIdx")) ;
+        log.info("user idx = {} 의 구매내역을 가져옵니다.", userIdx);
         List<PurchaseListVO> purchaseList = cartRepository.makingPurchaseListForMyPage(userIdx);
         model.addAttribute("List", purchaseList);
         return model;
@@ -65,8 +70,23 @@ public class MyPageService {
     public Model purchaseListFilter(Model model, Integer cat){
         Long userIdx = Long.valueOf((String) session.getAttribute("userIdx"));
         Statement stmt = Statement.getStatementByCode(cat);
+        log.info("다음 주문상태의 리스트로 필터링합니다. {}", stmt.getDescription());
         List<PurchaseListVO> purchaseList = cartRepository.makingPurchaseListForMyPageByCat(userIdx,stmt.getDescription());
         model.addAttribute("List", purchaseList);
         return model;
+    }
+    //purchase list 환불,교환,취소 신청
+    public void changeStatement(Long userIdx, String ask){
+        PurchaseEntity purchase = purchaseRepository.getByUserEntityUserIdx(userIdx);
+        Statement stmt;
+        switch (ask){
+            case "refund" : stmt = Statement.REFUND_ASKED; break;
+            case "change" : stmt = Statement.CHANGE_ASKED; break;
+            case "cancel" : stmt = Statement.CANCEL; break;
+            default: stmt = null;
+        }
+        log.info("{} (으)로 주문상태를 변경합니다.", stmt.getDescription());
+        purchase.setPurchaseStatement(stmt.getDescription());
+        purchaseRepository.save(purchase);
     }
 }

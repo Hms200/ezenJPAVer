@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -49,6 +46,15 @@ public class MyPageController {
             model = myPageService.purchaseListFilter(model, cat);
         }
         return "myPage/purchaseList";
+    }
+
+    @GetMapping("changestatement")
+    @ResponseBody
+    public String changeStatement(@RequestParam("userIdx") Long userIdx,
+                                  @RequestParam("ask") String ask){
+        log.info("환불,교환,취소 신청 접수");
+        myPageService.changeStatement(userIdx, ask);
+        return "<script>alert('신청이 완료되었습니다.'); location.href='/myPage/myPage'; </script>";
     }
 
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PurchaseRepository extends JpaRepository<PurchaseEntity, Long> {
 
-
+    PurchaseEntity getByUserEntityUserIdx(Long userIdx);
 }
