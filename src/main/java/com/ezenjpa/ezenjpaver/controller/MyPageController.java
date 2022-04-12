@@ -43,7 +43,10 @@ public class MyPageController {
 
     @RequestMapping("purchaseList")
     public String purchaseList(Model model, @RequestParam(name = "cat", required = false) Integer cat){
-        return "";
+        if(cat == null){
+            myPageService.purchaseList(model);
+        }
+        return "myPage/purchaseList";
     }
 
 }

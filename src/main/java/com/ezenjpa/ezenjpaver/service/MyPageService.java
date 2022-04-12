@@ -1,7 +1,9 @@
 package com.ezenjpa.ezenjpaver.service;
 
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
+import com.ezenjpa.ezenjpaver.VO.PurchaseListVO;
 import com.ezenjpa.ezenjpaver.entity.UserEntity;
+import com.ezenjpa.ezenjpaver.repository.CartRepository;
 import com.ezenjpa.ezenjpaver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import org.springframework.ui.Model;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -21,6 +23,8 @@ public class MyPageService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CartRepository cartRepository;
     @Autowired
     HttpSession session;
     @Autowired
@@ -51,6 +55,9 @@ public class MyPageService {
 
     //purchase list
     public Model purchaseList(Model model){
-    return model;
+        Long userIdx = Long.valueOf((String) session.getAttribute("userIdx")) ;
+        List<PurchaseListVO> purchaseList = cartRepository.makingPurchaseListForMyPage(userIdx);
+        model.addAttribute("List", purchaseList);
+        return model;
     }
 }

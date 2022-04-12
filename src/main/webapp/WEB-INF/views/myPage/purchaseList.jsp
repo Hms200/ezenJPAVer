@@ -37,67 +37,58 @@
 
 	<!-- container -->
 
-	<!-- <div
-		class="container-sm container-fluid d-flex flex-column justify-content-center align-items-center position-relative"
-		style="max-width: 520px;">--!>
-		 <!-- main container -->
          <div class="container-sm container-fluid d-flex flex-column align-items-center pl-0 pr-0 mb-5" id="mainContainer" style="max-width: 520px; margin-top: 60px; ">
-				
-	<!-- header 
-		<div class="container-fluid d-flex flex-row mb-4 " style="height: 60px;">           
-                <div class="col-12 my-4 py-2 text-start font-weight-bold text-black-50" style="font-size: 16px;">
-                  구매내역 상세조회  
-                </div>
-        </div> -->
+
         
 		<!-- 검색창 -->
 		<div class="form-goup d-flex flex-row justify-content-between mt-5 mb-3 w-100 " >
 			<div class="font-weight-bold mt-2 pl-3 text-black-50">내 구매내역 보기</div>
-			<%String user_id = request.getParameter("user_id"); %>
+			<%String user_id = request.getParameter("userId"); %>
 			<!-- 드롭다운 -->
 			<div style="width: 120px; height: 40px;">
 				<form name="progressForm" action="purchaseList"
 					style="height: 40px;">
-					<input type="hidden" name="user_id" value="<%=user_id%>">
+					<input type="hidden" name="userId" value="<%=user_id%>">
 					<select class="form-select mt-2" name="cat" aria-label="문의종류"
 						onchange="submit();">
-						<option value="null" selected>주문상태</option>
+						<option value="0" selected>주문상태</option>
 						<option value="1">주문접수</option>
 						<option value="2">상품준비중</option>
-						<option value="3">배송준비중</option>
-						<option value="4">배송중</option>
-						<option value="5">배송완료</option>
-						<option value="6">환불신청</option>
-						<option value="7">교환신청</option>
-						<option value="8">반품접수중</option>
+						<option value="3">배송중</option>
+						<option value="4">배송완료</option>
+						<option value="5">반품신청</option>
+						<option value="6">교환신청</option>
+						<option value="7">반품접수</option>
+						<option value="8">교환접수</option>
+						<option value="9">주문취소</option>
 					</select>
 				</form>
 			</div>
 		</div>
 		<!-- 카드 -->
-		<c:forEach var="list" items="${purchaseList}">
+		<c:forEach var="list" items="${List}">
 			<div
 				class="w-100 d-flex flex-column border border-dark-50 py-2 my-1"
 				style="height: 170px;">
 				<form name="purchaseHistoryForm">
 					<div class="w-100 d-flex flex-row justify-content-between my-1 font-secondary">			
-						<div class="ml-2">${list.get("PURCHASE_STATEMENT") }</div>
+						<div class="ml-2">${list.purchaseStatement }</div>
 						<div class="mr-3">
-						<fmt:formatDate value="${list.get('PURCHASE_DATE') }" dateStyle="default"/></div>
+						<fmt:formatDate value="${list.purchaseDate }" dateStyle="default"/></div>
 					</div>
 					<div class="d-flex flex-row">
 						<div col-3 class="ml-2">
-							<img src="${list.get('GOODS_THUMB') }" alt="" class="img-thumbnail"
+							<img src="${list.goodsThumb }" alt="" class="img-thumbnail"
 								width="100px">
 						</div>
 						<div class="col-9 mt-2 font-primary" >
-							<div class="col-12 text-left pl-2">상품이름: &nbsp;  ${list.get("GOODS_NAME") } </div>
-							<div class="col-12 text-left pl-2">구매번호:  &nbsp; ${list.get("PURCHASE_IDX") }</div>
+							<div class="col-12 text-left pl-2">상품이름: &nbsp;  ${list.goodsName } </div>
+							<div class="col-12 text-left pl-2">구매번호:  &nbsp; ${list.purchaseIdx }</div>
 							<div class="col-12 text-left pl-2 position-relative">
 								<span>가격:  &nbsp;
-								<fmt:formatNumber value='${list.get("GOODS_PRICE")}' groupingUsed="true" type="currency" />
+								<fmt:formatNumber value='${list.goodsPrice}' groupingUsed="true" type="currency" />
 								</span> 
-								<a href="reviewpopup?goods_idx=${list.get('GOODS_IDX')}&user_idx=${list.get('USER_IDX')}" 
+								<a href="reviewpopup?goods_idx=${list.goodsIdx}&user_idx=${list.userIdx}"
 								style="right: 0%; position: absolute" class="text-dark">리뷰작성</a>
 							</div>
 							<div
@@ -111,12 +102,13 @@
 								<button type="submit" value="취소신청" class="p-0  font-primary" name="AskCancle"
 								
 									onclick="multiSubmit(formName='purchasehistoryForm', formAction='purchaseCancleAction')">취소신청</button>
-								<input type="hidden" name="purchase_idx" value="${list.get('PURCHASE_IDX') }" >
+								<input type="hidden" name="purchase_idx" value="${list.purchaseIdx }" >
 							</div>
 						</div>
 					</div>
 				</form>
 			</div>
+
 		</c:forEach>
 	</div>
 

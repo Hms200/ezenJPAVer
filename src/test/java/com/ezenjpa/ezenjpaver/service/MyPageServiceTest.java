@@ -1,7 +1,7 @@
 package com.ezenjpa.ezenjpaver.service;
 
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
-import com.ezenjpa.ezenjpaver.entity.CartEntity;
+import com.ezenjpa.ezenjpaver.VO.PurchaseListVO;
 import com.ezenjpa.ezenjpaver.entity.UserEntity;
 import com.ezenjpa.ezenjpaver.repository.CartRepository;
 import com.ezenjpa.ezenjpaver.repository.UserRepository;
@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
@@ -20,8 +19,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -141,7 +138,7 @@ class MyPageServiceTest {
     @Comment("구매목록 작성")
     void purchaseList(){
         Long userIdx = 222L;
-        List<CartEntity> purchaseList = cartRepository.makingPurchaseListForMyPage(userIdx);
-        System.out.println(purchaseList.toString());
+        List<PurchaseListVO> list = cartRepository.makingPurchaseListForMyPage(userIdx);
+        System.out.println(list.toString());
     }
 }
