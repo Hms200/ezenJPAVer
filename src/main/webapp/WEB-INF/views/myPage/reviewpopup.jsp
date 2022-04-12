@@ -71,8 +71,8 @@
 					<textarea name="review_contents" id="review" cols="50" rows="10"
 						class="form-control form-control-lg border border-color col-12 font-primary"
 						style="height: 200px;" placeholder="리뷰를 입력해 주세요" id="review_content"></textarea>
-					<input type="hidden" name="user_idx" id="user_idx" value="<%=request.getParameter("user_idx") %>">
-					<input type="hidden" name="goods_idx" id="goods_idx" value="<%=request.getParameter("goods_idx") %>">
+					<input type="hidden" name="user_idx" id="user_idx" value="${ user_idx }">
+					<input type="hidden" name="goods_idx" id="goods_idx" value="${ goods_idx }">
 				</div>
 			
 			</form>

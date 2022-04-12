@@ -23,7 +23,7 @@ public enum Statement {
     private int code;
     private String description;
 
-    public static Statement desriptionOf(String description){
+    public static Statement getStatementByDescription(String description){
         for(Statement stmt : Statement.values()){
             if(stmt.getDescription().equals(description)){
                 return stmt;

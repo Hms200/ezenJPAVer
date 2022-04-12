@@ -57,4 +57,12 @@ public class MyPageController {
         return "<script>alert('신청이 완료되었습니다.'); location.href='/myPage/myPage'; </script>";
     }
 
+    @GetMapping("reviewpopup")
+    public String reviewPopup(@RequestParam String user_idx,
+                              @RequestParam String goods_idx, Model model){
+        model.addAttribute("user_idx",user_idx);
+        model.addAttribute("goods_idx", goods_idx);
+        return "myPage/reviewpopup";
+    }
+
 }
