@@ -1,7 +1,9 @@
 package com.ezenjpa.ezenjpaver.service;
 
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
+import com.ezenjpa.ezenjpaver.entity.CartEntity;
 import com.ezenjpa.ezenjpaver.entity.UserEntity;
+import com.ezenjpa.ezenjpaver.repository.CartRepository;
 import com.ezenjpa.ezenjpaver.repository.UserRepository;
 import org.hibernate.annotations.Comment;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,8 @@ class MyPageServiceTest {
     UserRepository userRepository;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    CartRepository cartRepository;
 
 
     @Test
@@ -131,5 +135,13 @@ class MyPageServiceTest {
         });
 
         System.out.println(userEntity.toString());
+    }
+
+    @Test
+    @Comment("구매목록 작성")
+    void purchaseList(){
+        Long userIdx = 222L;
+        List<CartEntity> purchaseList = cartRepository.makingPurchaseListForMyPage(userIdx);
+        System.out.println(purchaseList.toString());
     }
 }

@@ -49,4 +49,8 @@ public class MyPageService {
         log.info("user 정보 업데이트 완료.");
     }
 
+    //purchase list
+    public Model purchaseList(Model model){
+    return model;
+    }
 }

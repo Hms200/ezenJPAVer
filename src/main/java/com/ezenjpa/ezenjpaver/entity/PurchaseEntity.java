@@ -11,6 +11,7 @@ import java.util.Date;
                     sequenceName = "MALL_PURCHASE_SEQ",
                     allocationSize = 1)
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -14,9 +14,11 @@ import java.util.List;
                     sequenceName = "MALL_GOODS_SEQ",
                     allocationSize = 1)
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class GoodsEntity {
 
     @Id
@@ -54,8 +56,14 @@ public class GoodsEntity {
     private Integer goodsOnSale;
 
     //연관관계 mapping - review
-    @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<ReviewEntity> reviewEntities;
+
+    //연관관계 mapping - cart
+    @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<CartEntity> cartEntities;
 
 
     //상품dto로 변환

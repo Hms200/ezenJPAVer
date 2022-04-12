@@ -10,6 +10,7 @@ import javax.persistence.*;
                     sequenceName = "MALL_CART_SEQ",
                     allocationSize = 1)
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,7 +23,7 @@ public class CartEntity {
     @Column(name = "CART_IDX")
     private Long cartIdx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CART_LIST_IDX")
     private CartListEntity cartListEntity;
 
@@ -46,5 +47,9 @@ public class CartEntity {
 
     @Column(name = "CART_ISDONE")
     private Integer cartIsDone;
+
+    @Transient
+    
+    private PurchaseEntity purchaseEntity;
 
 }

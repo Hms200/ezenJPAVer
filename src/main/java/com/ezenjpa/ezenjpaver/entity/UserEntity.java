@@ -2,7 +2,6 @@ package com.ezenjpa.ezenjpaver.entity;
 
 import com.ezenjpa.ezenjpaver.DTO.UserDTO;
 import com.ezenjpa.ezenjpaver.enums.UserProvider;
-import com.ezenjpa.ezenjpaver.repository.UserRepository;
 import lombok.*;
 
 import javax.persistence.*;
@@ -69,6 +68,11 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<CartEntity> cartEntities;
+
+    // 연관관계 maaping - purchase list
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<PurchaseEntity> purchaseEntities;
 
     // converter
     public UserDTO convertToUserDTO(UserEntity userEntity){

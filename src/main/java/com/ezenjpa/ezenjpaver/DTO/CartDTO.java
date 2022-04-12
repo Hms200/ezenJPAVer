@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @Getter
 @ToString
@@ -17,6 +19,15 @@ public class CartDTO {
     private Integer cartAmount;
     private Integer cartTotalPrice;
     private int cartIsDone;
+
+    private Long purchaseIdx;
+    private String purchaseStatement;
+    private Date purchaseDate;
+
+    private Long goodsIdx;
+    private String goodsThumb;
+    private String goodsName;
+    private Integer goodsPrice;
 
     @Builder
     public CartDTO(Long cartIdx, Long cartListIdx, Long userIdx, Integer optionIdx, Integer cartAmount, Integer cartTotalPrice, int cartIsDone) {

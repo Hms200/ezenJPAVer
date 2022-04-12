@@ -3,6 +3,7 @@ package com.ezenjpa.ezenjpaver.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "MALL_CART_LIST")
@@ -21,5 +22,14 @@ public class CartListEntity {
                     generator = "cartList_seq_generator")
     @Column(name = "CART_LIST_IDX")
     private Long cartListIdx;
+
+    // 연관관계 mapping - cart list
+    @OneToMany(mappedBy = "cartListEntity")
+    @ToString.Exclude
+    private List<CartEntity> cartEntities;
+    // 연관관계 mapping - purchase list
+    @OneToOne(mappedBy = "cartListEntity", fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private PurchaseEntity purchaseEntity;
 
 }
