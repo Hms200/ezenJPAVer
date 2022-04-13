@@ -55,7 +55,7 @@
         <input type="hidden" name="changeValue${ cart.cartIdx }" value="${ goods.goodsPrice }">
         
       </div>
-      
+
       <div class="d-flex flex-row justify-content-around mb-3">
         <img src="${ goods.goodsThumb }" alt="" class="img-fluid mr-1" width="100px" height="100px">
         <div class="d-flex flex-column col-8 pl-2 pt-1" >

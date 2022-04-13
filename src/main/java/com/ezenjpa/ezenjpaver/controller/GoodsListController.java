@@ -80,9 +80,14 @@ public class GoodsListController {
     // 장바구니 개별항목 리스트로 묶기
     @PostMapping("listingGoodsAction")
     @ResponseBody
-    public String listingGoods(@RequestParam HashMap<String, String> cartIdxs){
+    public String listingGoods(@RequestBody HashMap<String, String> cartIdxs){
         Long cartListIdx = goodsListService.listingGoods(cartIdxs);
         return String.valueOf(cartListIdx);
+    }
+
+    @GetMapping("purchase")
+    public String purchase(@RequestParam Long cartListIdx, Model model){
+        return "";
     }
 
 

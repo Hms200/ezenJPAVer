@@ -124,7 +124,7 @@ public class GoodsListService {
                 targets.put(k, v);
             }
         });
-        log.info("다음 cart idx를 가진 항목을 하나의 리스트로 묶습니다. - {}",targets.keySet());
+        log.info("다음 cart idx를 가진 항목을 하나의 리스트로 묶습니다. - {}",targets);
         targets.forEach((k,v) -> {
             CartEntity cart = cartRepository.getById(Long.valueOf(k));
             cart.setCartListEntity(newCartList);
