@@ -52,4 +52,6 @@ public class QuestionEntity {
     @Temporal(TemporalType.DATE)
     private Date questionReplyDate;
 
+
+
 }

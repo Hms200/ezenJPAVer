@@ -74,6 +74,11 @@ public class UserEntity {
     @ToString.Exclude
     private List<PurchaseEntity> purchaseEntities;
 
+    // 연관관계 mapping - question
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<QuestionEntity> questionEntities;
+
     // converter
     public UserDTO convertToUserDTO(UserEntity userEntity){
         return UserDTO.builder()

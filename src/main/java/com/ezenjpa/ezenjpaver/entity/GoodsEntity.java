@@ -65,6 +65,15 @@ public class GoodsEntity {
     @ToString.Exclude
     private List<CartEntity> cartEntities;
 
+    //연관관계 mapping - question
+    @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<QuestionEntity> questionEntities;
+
+    //연관관계 mapping - goods img
+    @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<GoodsImgsEntity> goodsImgsEntities;
+
 
     //상품dto로 변환
     public GoodsDTO convertToGoodsDTO(GoodsEntity entity){

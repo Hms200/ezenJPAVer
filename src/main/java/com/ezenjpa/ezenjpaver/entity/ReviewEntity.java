@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "MALL_REVIEW")
@@ -61,12 +62,12 @@ public class ReviewEntity {
     @Column(name = "REVIEW_IDX")
     private Long reviewIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USER_IDX")
     @ToString.Exclude
     private UserEntity userEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "GOODS_IDX")
     @ToString.Exclude
     private GoodsEntity goodsEntity;
@@ -91,5 +92,9 @@ public class ReviewEntity {
     @Temporal(TemporalType.DATE)
     private Date reviewReplyDate;
 
+    // 연관관계 mapping - review img
+    @OneToOne(mappedBy = "reviewEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private ReviewImgsEntity reviewImgsEntities;
 
 }

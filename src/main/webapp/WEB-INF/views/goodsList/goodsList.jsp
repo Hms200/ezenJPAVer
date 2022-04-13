@@ -39,13 +39,13 @@
     <main class="<%=catname%>">
       <div class="dep container-fluid px-auto mt-3 mb-5 col-12 d-flex flex-wrap justify-content-start text-center">
       <c:forEach var="dto" items="${ list }">
-          <div class="col-5 inline-block mx-auto my-2 px-0 border rounded val${ dto.goods_cat } position-relative">
-            <a href="goodsDetail?goods_idx=${dto.goods_idx}">
-            <img src="${dto.goods_thumb}" alt="" class="card-img-top img-fluid"></a>
+          <div class="col-5 inline-block mx-auto my-2 px-0 border rounded val${ dto.goodsCat } position-relative">
+            <a href="goodsDetail?goods_idx=${dto.goodsIdx}">
+            <img src="${dto.goodsThumb}" alt="" class="card-img-top img-fluid"></a>
             <div class="card-body py-2 px-2 text-dark text-decoration-none" >
-	            <h5 class="card-title font-weight-bold mt-1 font-primary">${dto.goods_name}</h5>
-	            <p class="card-text mb-1 font-secondary">${dto.goods_cat}</p>
-	            <p class="card-text mb-2 font-secondary">￦${dto.goods_price }</p>
+	            <h5 class="card-title font-weight-bold mt-1 font-primary">${dto.goodsName}</h5>
+	            <p class="card-text mb-1 font-secondary">${dto.goodsCat}</p>
+	            <p class="card-text mb-2 font-secondary">￦${dto.goodsPrice }</p>
        	  	</div>
        	  
      		</div>
