@@ -41,6 +41,8 @@ public class GoodsListController {
     }
 
     // 질문작성
-    @PostMapping("productQnaWriteAction")
+//    @PostMapping("productQnaWriteAction")
+//    @ResponseBody
+//
 
 }
