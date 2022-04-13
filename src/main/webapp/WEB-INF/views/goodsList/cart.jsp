@@ -31,7 +31,7 @@
     <main class="w-100 my-4">
     <div class="container-fluid d-flex felx-row justify-content-between mx-3 my-3 border-bottom col-11" style="height: 46px;">
       <div class="ml-0">
-        <input type="checkbox" value="selectAll" class="ml-0 font-primary" id="checkAll" onclick="selectAll(this)" style="width: 16px; height: 16px;"><label for="selectAll"
+        <input type="checkbox" value="selectAll" class="ml-0 font-primary" id="checkAll" onclick="selectAll(this)" style="width: 16px; height: 16px;"><label for="checkAll"
           class="ml-2">전체선택</label>
       </div> 
       
@@ -48,26 +48,28 @@
        
 
       <div class="row mt-1 mx-2 mb-1 font-primary">
-        <input type="hidden" class="cartidx" name="changeValue${ cart.cart_idx }" value="${ cart.cart_idx }">
-        <input type="checkbox" name="${ cart.cart_idx }" class="mx-1" style="width: 16px; height: 16px;">
-        <c:set var="goods" value="${ goodslist.get(status.index) }" scope="page" />
-        <div>${ goods.goods_name }</div>
-        <input type="hidden" name="changeValue${ cart.cart_idx }" value="${ goods.goods_price }">
+        <input type="hidden" class="cartidx" name="changeValue${ cart.cartIdx }" value="${ cart.cartIdx }">
+        <input type="checkbox" name="${ cart.cartIdx }" class="mx-1" style="width: 16px; height: 16px;">
+        <c:set var="goods" value="${ goodslist[status.index] }" scope="page" />
+        <div>${ goods.goodsName }</div>
+        <input type="hidden" name="changeValue${ cart.cartIdx }" value="${ goods.goodsPrice }">
         
       </div>
       
       <div class="d-flex flex-row justify-content-around mb-3">
-        <img src="${ goods.goods_thumb }" alt="" class="img-fluid mr-1" width="100px" height="100px">
+        <img src="${ goods.goodsThumb }" alt="" class="img-fluid mr-1" width="100px" height="100px">
         <div class="d-flex flex-column col-8 pl-2 pt-1" >
           <div class="d-flex flex-row justify-content-between mb-1">
-            <span class="font-primary">가격</span><span>${ cart.cart_total_price }</span> 
-            <input type="hidden" class="price font-primary" name="changeValue${ cart.cart_idx }" value="${ cart.cart_total_price }">
+            <span class="font-primary">가격</span><span>${ cart.cartTotalPrice }</span>
+            <input type="hidden" class="price font-primary" name="changeValue${ cart.cartIdx }" value="${ cart.cartTotalPrice }">
           </div>
          <div class="d-flex flex-row justify-content-between mb-1">
             <span class="font-primary">옵션</span>
-            <span class="font-primary"><c:set var="this_cart_option" value="${ cart.option_idx }" scope="page"/>
+            <span class="font-primary"><c:set var="this_cart_option" value="${ cart.getOptionEntity().getOptionIdx() }" scope="page"/>
             <c:forEach var="option" items="${ optionlist }">
-            	<c:if test="${ this_cart_option eq option.option_idx }">${ option.option_name }+${ option.option_price }</c:if>
+            	<c:if test="${ this_cart_option eq option.optionIdx }">${ option.optionName }+${ option.optionPrice }
+                <c:set var="optionprice" value="${option.optionPrice}" scope="page"/>
+                </c:if>
             </c:forEach>
           <c:remove var="goods" scope="page"/>  
             </span>
@@ -75,34 +77,36 @@
          <div class="d-flex flex-row justify-content-between font-primary">
             옵션 및 수량
             <!-- 서버에서 처리 -->
-            <input id="changeValue${ cart.cart_idx }" type="button" class="btn-block mt-1 mb-1 btn btn-secondary d-flex flex-content-center font-small" value="변경하기"
+            <input id="changeValue${ cart.cartIdx }" type="button" class="btn-block mt-1 mb-1 btn btn-secondary d-flex flex-content-center font-small" value="변경하기"
               style="width: 70px; height: 20px;  line-height:2px;" onclick="changeValue(event);">
           </div>
           <div class="d-flex flex-row justify-content-end mt-1">
           
-            <select class="text-center font-secondary" name="changeValue${ cart.cart_idx }" style="width: 125px;">
+            <select class="text-center font-secondary" name="changeValue${ cart.cartIdx }" style="width: 125px;">
               <c:forEach var="options" items="${ optionlist }">
-              <option <c:if test="${ this_cart_option eq options.option_idx }"> selected </c:if> value="${ options.option_idx }">${ options.option_name }+${ options.option_price }</option>
+              <option <c:if test="${ this_cart_option eq options.optionIdx }"> selected </c:if> value="${ options.optionIdx }">${ options.optionName }+${ options.optionPrice }</option>
               </c:forEach>
-              <c:remove var="this_cart_option" scope="page"/>
+
             </select>
-            
-            <select class=" text-center font-secondary" name="changeValue${ cart.cart_idx }"
+
+            <select class=" text-center font-secondary" name="changeValue${ cart.cartIdx }"
               style="width: 35px; ">
-              <option <c:if test="${ cart.cart_amount == 1 }"> selected </c:if> value="1" >1</option>
-              <option <c:if test="${ cart.cart_amount == 2 }"> selected </c:if> value="2">2</option>
-              <option <c:if test="${ cart.cart_amount == 3 }"> selected </c:if> value="3">3</option>
-              <option <c:if test="${ cart.cart_amount == 4 }"> selected </c:if> value="4">4</option>
-              <option <c:if test="${ cart.cart_amount == 5 }"> selected </c:if> value="5">5</option>
+              <option <c:if test="${ cart.cartAmount == 1 }"> selected </c:if> value="1" >1</option>
+              <option <c:if test="${ cart.cartAmount == 2 }"> selected </c:if> value="2">2</option>
+              <option <c:if test="${ cart.cartAmount == 3 }"> selected </c:if> value="3">3</option>
+              <option <c:if test="${ cart.cartAmount == 4 }"> selected </c:if> value="4">4</option>
+              <option <c:if test="${ cart.cartAmount == 5 }"> selected </c:if> value="5">5</option>
             </select>
-            
+              <input type="hidden" name="changeValue${cart.cartIdx}" value="${optionprice}">
+              <c:remove var="this_cart_option" scope="page"/>
+              <c:remove var="optionprice" />
             
           </div>
         </div>
       </div>
       
       </c:forEach>
-     
+
       <div class="d-flex flex-row justify-content-between mx-2 mt-5 mb-3 pr-3 font-primary">
         <div>
           상품금액

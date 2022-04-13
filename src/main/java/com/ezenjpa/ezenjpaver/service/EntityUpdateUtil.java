@@ -62,14 +62,17 @@ public class EntityUpdateUtil {
                             e.printStackTrace();
                         }
         // update 할 field가 Entity형 인 경우 Repository 호출하여 join된 Entity 가져와서 setter로 update 할 entity에 넣어줌
-                    }if(method.getName().contains("set") && method.getName().contains("Entity") && method.getName().toUpperCase(Locale.ROOT).contains(name.replace("IDX",""))){
+                    }if(method.getName().contains("set") && method.getName().contains("Entity") &&
+                        method.getName().replace("set", "").replace("Entity", "").toUpperCase()
+                                .equals(name.replace("IDX",""))){
                         String repo = k.replace("Idx", "");
                         repo = repo.substring(0,1).toUpperCase() + repo.substring(1);
                         String methodname = k.substring(0,1).toUpperCase() + k.substring(1);
-                        if(v.equals(0)){ v = 0L;}
+
                         try {
                             Class<?> cls = Class.forName("com.ezenjpa.ezenjpaver.repository." + repo + "Repository");
                             Class<?> entitycls = Class.forName("com.ezenjpa.ezenjpaver.entity."+ repo + "Entity");
+                            log.info("{}, {}, {}",cls.getName(),entitycls.getName(),methodname);
                             Object targetentity = context.getBean(cls).getClass().getDeclaredMethod("getBy"+methodname, Long.class).invoke(context.getBean(cls), v);
                             method.invoke(entity,  entitycls.cast(targetentity));
                         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {

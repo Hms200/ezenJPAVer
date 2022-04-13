@@ -1,6 +1,7 @@
 package com.ezenjpa.ezenjpaver.controller;
 
 import com.ezenjpa.ezenjpaver.DTO.CartDTO;
+import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
 import com.ezenjpa.ezenjpaver.service.GoodsListService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -37,12 +39,36 @@ public class GoodsListController {
     @PostMapping("toShoppingCartAction")
     @ResponseBody
     public String toShoppingCart(@RequestBody CartDTO cart) throws InvocationTargetException, IllegalAccessException {
+        goodsListService.addGoodsInCart(cart);
         return String.valueOf(session.getAttribute("cart"));
     }
 
     // 질문작성
-//    @PostMapping("productQnaWriteAction")
-//    @ResponseBody
-//
+    @PostMapping("productQnaWriteAction")
+    @ResponseBody
+    public String writeQuestion(@ModelAttribute QuestionDTO question) throws InvocationTargetException, IllegalAccessException {
+        goodsListService.insertQuestion(question);
+        return "<script>alert('등록되었습니다.');location.reload;</script>";
+    }
+
+    @RequestMapping("cart")
+    public String cart(Model model){
+        Optional<String> userId =  Optional.ofNullable((String)session.getAttribute("userId"));
+        if(userId.isEmpty()){
+            String errorMessage = "로그인 하신 후 이용하실 수 있습니다.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "login/login";
+        }else {
+            model = goodsListService.getGoodsInCart(model);
+            return "goodsList/cart";
+        }
+    }
+
+    @PostMapping("changeValueAction")
+    @ResponseBody
+    public void changeValue(@RequestBody CartDTO cart) throws InvocationTargetException, IllegalAccessException {
+        goodsListService.changeValueOfItemInCart(cart);
+    }
+
 
 }

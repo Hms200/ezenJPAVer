@@ -6,10 +6,7 @@ import com.ezenjpa.ezenjpaver.DTO.ReviewDTO;
 import com.ezenjpa.ezenjpaver.entity.GoodsEntity;
 import com.ezenjpa.ezenjpaver.entity.NoticeEntity;
 import com.ezenjpa.ezenjpaver.enums.Events;
-import com.ezenjpa.ezenjpaver.repository.GoodsRepository;
-import com.ezenjpa.ezenjpaver.repository.NoticeRepository;
-import com.ezenjpa.ezenjpaver.repository.ReviewRepository;
-import com.ezenjpa.ezenjpaver.repository.UserRepository;
+import com.ezenjpa.ezenjpaver.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +32,8 @@ public class MainService {
     @Autowired
     ReviewRepository reviewRepository;
     @Autowired
+    CartRepository cartRepository;
+    @Autowired
     HttpSession session;
 
     public void setCartBedgeNumber(){
@@ -53,7 +52,7 @@ public class MainService {
 
         if(userIdx != null){
             try {
-                cartBedgeNum = userRepository.countUserEntitiesByUserIdxAndCartEntitiesNotNull(Long.valueOf(userIdx));
+                cartBedgeNum = cartRepository.countCartEntitiesByCartIsDoneAndUserEntityUserIdx(0, (long)userIdx);
                 log.info("Number Of Cart-Bedge = {}", cartBedgeNum);
             }catch (NullPointerException e){
                 log.error("빈 카트 ");

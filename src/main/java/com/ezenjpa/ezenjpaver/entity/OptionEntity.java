@@ -10,6 +10,7 @@ import javax.persistence.*;
                     sequenceName = "MALL_GOODS_OPTION_SEQ",
                     allocationSize = 1)
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

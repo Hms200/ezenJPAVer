@@ -13,7 +13,7 @@ public class CartDTO {
     private Long cartIdx;
     private Long cartListIdx;
     private Long userIdx;
-    private Integer optionIdx;
+    private Long optionIdx;
     private Integer cartAmount;
     private Integer cartTotalPrice;
     private int cartIsDone;
@@ -28,7 +28,7 @@ public class CartDTO {
     private Integer goodsPrice;
 
     @Builder
-    public CartDTO(Long cartIdx, Long cartListIdx, Long userIdx, Integer optionIdx, Integer cartAmount, Integer cartTotalPrice, int cartIsDone, Long purchaseIdx, String purchaseStatement, Date purchaseDate, Long goodsIdx, String goodsThumb, String goodsName, Integer goodsPrice) {
+    public CartDTO(Long cartIdx, Long cartListIdx, Long userIdx, Long optionIdx, Integer cartAmount, Integer cartTotalPrice, int cartIsDone, Long purchaseIdx, String purchaseStatement, Date purchaseDate, Long goodsIdx, String goodsThumb, String goodsName, Integer goodsPrice) {
         this.cartIdx = cartIdx;
         this.cartListIdx = cartListIdx;
         this.userIdx = userIdx;

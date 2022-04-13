@@ -373,12 +373,14 @@ function changeValue(event){
 	// [2] : cart_total_price
 	// [3] : option_idx
 	// [4] : cart_amount
-	
+	// [5] : option_price
+	let originalprice = values[1].value;
+	let optionprice = values[5].value;
 	let formData = {};
-	formData["cart_idx"] = values[0].value;
-	formData["option_idx"] = values[3].value;
-	formData["cart_amount"] = values[4].value;
-	formData["original_price"] = values[1].value;
+	formData["cartIdx"] = values[0].value;
+	formData["optionIdx"] = values[3].value;
+	formData["cartAmount"] = values[4].value;
+	formData["cartTotalPrice"] = parseInt(originalprice) + parseInt(optionprice);
 	
 	formData = JSON.stringify(formData);
 	console.log(formData.toString());
@@ -391,7 +393,7 @@ function changeValue(event){
 		data: formData,
 		success: function(){
 			alert('변경되었습니다.');
-			location.href='cart'
+			location.href='../goodsList/cart';
 		},
 		error: function(e){
 			console.log(e);

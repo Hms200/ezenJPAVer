@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CartRepository extends JpaRepository<CartEntity, Long> {
 
+    CartEntity getByCartIdx(Long cartIdx);
+
     @Query(name = "purchaseListForMember", nativeQuery = true)
     List<PurchaseListVO> makingPurchaseListForMyPage(@Param("userIdx") Long userIdx);
 
@@ -17,5 +19,7 @@ public interface CartRepository extends JpaRepository<CartEntity, Long> {
     List<PurchaseListVO> makingPurchaseListForMyPageByCat(@Param("userIdx") Long userIdx,
                                                           @Param("statement") String statement);
 
+    List<CartEntity> getAllByCartIsDoneAndUserEntityUserIdx(int cartIsDone, Long userIdx);
 
+    Long countCartEntitiesByCartIsDoneAndUserEntityUserIdx(int cartIsDone, Long userIdx);
 }
