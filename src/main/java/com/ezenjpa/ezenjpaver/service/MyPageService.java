@@ -110,7 +110,7 @@ public class MyPageService {
               .goodsEntity(goodsRepository.getById(review.getGoodsIdx()))
               .reviewStar(review.getReviewStar())
               .reviewContents(review.getReviewContents())
-              .reivewDate(Date.from(Instant.now()))
+              .reviewDate(Date.from(Instant.now()))
               .reviewIsReplied(0)
               .build();
       newReview = reviewRepository.save(newReview);

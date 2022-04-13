@@ -1,14 +1,12 @@
 package com.ezenjpa.ezenjpaver.DTO;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @ToString
 public class CartDTO {
 
@@ -30,7 +28,7 @@ public class CartDTO {
     private Integer goodsPrice;
 
     @Builder
-    public CartDTO(Long cartIdx, Long cartListIdx, Long userIdx, Integer optionIdx, Integer cartAmount, Integer cartTotalPrice, int cartIsDone) {
+    public CartDTO(Long cartIdx, Long cartListIdx, Long userIdx, Integer optionIdx, Integer cartAmount, Integer cartTotalPrice, int cartIsDone, Long purchaseIdx, String purchaseStatement, Date purchaseDate, Long goodsIdx, String goodsThumb, String goodsName, Integer goodsPrice) {
         this.cartIdx = cartIdx;
         this.cartListIdx = cartListIdx;
         this.userIdx = userIdx;
@@ -38,5 +36,13 @@ public class CartDTO {
         this.cartAmount = cartAmount;
         this.cartTotalPrice = cartTotalPrice;
         this.cartIsDone = cartIsDone;
+        this.purchaseIdx = purchaseIdx;
+        this.purchaseStatement = purchaseStatement;
+        this.purchaseDate = purchaseDate;
+        this.goodsIdx = goodsIdx;
+        this.goodsThumb = goodsThumb;
+        this.goodsName = goodsName;
+        this.goodsPrice = goodsPrice;
     }
 }
+

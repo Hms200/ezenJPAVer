@@ -16,7 +16,7 @@ import java.util.Map;
 *  DTO에 담긴 정보로 Entity의 내용을 update 해줌.
 *
 *  연관관계가 mapping 된 field의 entity정보를 가져오기 위해서는 해당 entity를 가져올 repository 에
-*  getBy**Idx 가 만들어져 있어야 함. -> 새로운 entity 내용으로 db insert 가능.
+*  getBy**Idx 가 만들어져 있어야 함. dto로 새로운 entity만들어서 insert 도 가능
 *
 * */
 @Component
@@ -66,6 +66,7 @@ public class EntityUpdateUtil {
                         String repo = k.replace("Idx", "");
                         repo = repo.substring(0,1).toUpperCase() + repo.substring(1);
                         String methodname = k.substring(0,1).toUpperCase() + k.substring(1);
+                        if(v.equals(0)){ v = 0L;}
                         try {
                             Class<?> cls = Class.forName("com.ezenjpa.ezenjpaver.repository." + repo + "Repository");
                             Class<?> entitycls = Class.forName("com.ezenjpa.ezenjpaver.entity."+ repo + "Entity");

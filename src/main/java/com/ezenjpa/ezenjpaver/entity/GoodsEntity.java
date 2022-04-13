@@ -58,20 +58,24 @@ public class GoodsEntity {
     //연관관계 mapping - review
     @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude
+
     private List<ReviewEntity> reviewEntities;
 
     //연관관계 mapping - cart
     @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude
+
     private List<CartEntity> cartEntities;
 
     //연관관계 mapping - question
     @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @ToString.Exclude
+
     private List<QuestionEntity> questionEntities;
 
     //연관관계 mapping - goods img
-    @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "goodsEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<GoodsImgsEntity> goodsImgsEntities;
 
 

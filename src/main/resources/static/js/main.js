@@ -322,22 +322,22 @@ function addCart(){
 	const bedge = document.getElementById('bedgeNumber');
 	const btnClicked = event.target.id;
 	
-	if(userIdx == 0){
+	if(userIdx === "" || userIdx == null){
 		alert('로그인하신 후 이용할 수 있습니다.');
 		location.href='../login/login';
 	}else{
 	
 		let formData = {};
 		
-		formData["user_idx"] = userIdx;
-		formData["goods_idx"] = goodsIdx;
-		formData["option_idx"] = optionIdx;
-		formData["cart_amount"] = 1;
-		formData["cart_total_price"] = totalPrice;
-		formData["cart_isdone"] = 0;
+		formData["userIdx"] = userIdx;
+		formData["goodsIdx"] = goodsIdx;
+		formData["optionIdx"] = optionIdx;
+		formData["cartAmount"] = 1;
+		formData["cartTotalPrice"] = totalPrice;
+		formData["cartIsdone"] = 0;
 		
 		formData = JSON.stringify(formData);
-		
+		console.log(formData.toString());
 		jQuery.ajax({
 			url: "toShoppingCartAction",
 			type: "POST",

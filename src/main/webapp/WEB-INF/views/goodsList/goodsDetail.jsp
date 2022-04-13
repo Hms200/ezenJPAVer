@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${ goods.goods_name }</title>
+    <title>${ goods.goodsName }</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/custom.css">
@@ -27,20 +27,9 @@
     class="container-sm container-fluid d-flex flex-column justify-content-center align-items-center position-relative mb-5" id="mainContainer"
     style="max-width: 520px; margin-top: 60px">
     
-    <!--상품 상단 뒤로가기 버튼 &&현재 페이지 내용
-    <div class="container-sm container-fluid d-flex flex-row mb-0 px-0">
-      <div class="col-2 my-3">
-        <a href="goodsList"><img src="/img/icon/left.png" alt="" class="mx-auto d-block my-auto img-fluid"
-            width="30px" height="30px"></a>
-      </div>
-      <div class="col-10 my-3 py-1 pr-5 text-center font-weight-bold">
-        상품상세정보
-      </div>
-    </div>-->
-    
     <!--상품 상세보기 이미지-->
     <c:if test="${ goodsImgs.size() != 0 }">
-    <!-- 이미지 테스트 후 이상 있을경우 w-100 삭제 스타일에 위스 360px 넣어서 다시 되돌려주세요.  -->
+
     <div id="carouselImg" class="carousel slide mx-0 px-0 w-100" data-ride="carousel" style="">
         <ol class="carousel-indicators">
         <li data-target="#carouselImg" data-slide-to="0" class="active"></li>
@@ -49,16 +38,16 @@
         </ol>
         <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="${ goodsImgs.get(0) }" class="d-block w-100" alt="...">
+            <img src="${ goodsImgs[0].goodsImg }" class="d-block w-100" alt="...">
         </div>
         <c:if test="${ goodsImgs.size() >= 2 }">
         <div class="carousel-item">
-            <img src="${ goodsImgs.get(1) }" class="d-block w-100" alt="...">
+            <img src="${ goodsImgs[1].goodsImg }" class="d-block w-100" alt="...">
         </div>
         </c:if>
         <c:if test="${ goodsImgs.size() == 3 }">
         <div class="carousel-item">
-            <img src="${ goodsImgs.get(2) }" class="d-block w-100" alt="...">
+            <img src="${ goodsImgs[2].goodsImg }" class="d-block w-100" alt="...">
         </div>
         </c:if>
         </div>
@@ -66,14 +55,14 @@
     </c:if>
     <c:if test="${ goodsImgs.size() == 0 }">
     <div class=" mx-0 px-0">
-      <img src="${goods.goods_thumb}" alt="" class="img-fluid" width="360px" height="240px">
+      <img src="${goods.goodsThumb}" alt="" class="img-fluid" width="360px" height="240px">
     </div>
     </c:if>
     <!--상품 상세보기 타이틀-->
     <div class="my-3 font-weight-bold text-center" style="font-size: 18px;">
-    ${goods.goods_name}
-    <input type="hidden" name="goods_idx" value="${ goods.goods_idx }">
-    <input type="hidden" name="user_idx" value="${ user_idx }">
+    ${goods.goodsName}
+    <input type="hidden" name="goods_idx" value="${ goods.goodsIdx }">
+    <input type="hidden" name="user_idx" value="${ userIdx }">
       <!--부모클래스bg-primary 안넣었음 -->
     </div>
     <!--상품 상세보기 옵션 드롭다운-->
@@ -89,12 +78,12 @@
         
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <c:forEach var="option" items="${ goodsOptions }"> 
-          <button class="dropdown-item font-primary" id="${ option.option_idx }" type="button" onclick="totalPrice(event);">${ option.option_name }+${ option.option_price }</button>
-          <input type="hidden" name="${ option.option_idx }" value="${ option.option_price }">
-          <input type="hidden" name="${ option.option_idx }" value="${ option.option_idx }">
+          <button class="dropdown-item font-primary" id="${ option.optionIdx }" type="button" onclick="totalPrice(event);">${ option.optionName }+${ option.optionPrice }</button>
+          <input type="hidden" name="${ option.optionIdx }" value="${ option.optionPrice }">
+          <input type="hidden" name="${ option.optionIdx }" value="${ option.optionIdx }">
  		  </c:forEach>     
         </div>
-        <input type="hidden" name="option_idx" value="">
+        <input type="hidden" name="option_idx" value="0">
         
       </div>
     </div>
@@ -103,7 +92,7 @@
       <div class="col-3 py-2 font-primary">
         판매가 
       </div>
-      <input type="hidden" name="goods_price" value="${ goods.goods_price }">
+      <input type="hidden" name="goods_price" value="${ goods.goodsPrice }">
       <div class="col-4 font-primary">
       <input type="text" class="form-control-plaintext" name="goods_total_price" value="">
       <%-- <fmt:formatNumber value="${goods.goods_price}" type="number" /> --%>
@@ -128,7 +117,7 @@
     <main class="info w-100">
       <div class="dep _info">
         <div class="d-block text-center mx-5 my-4">
-          <img src="${goods.goods_detail}" alt="" class="img-fluid">
+          <img src="${goods.goodsDetail}" alt="" class="img-fluid">
          
            <!--구매하기버튼/장바구니 아이콘-->
           
@@ -155,12 +144,12 @@
 			  <!-- 등록된 리뷰이미지가 있으면 표시하고, 없으면 대체이미지 표시함 -->
 			  <c:set var="isExistImg" value="0" />
 			  <c:forEach var="review_img" items="${ reviewImgList }">
-	        		<c:if test="${ dto.review_idx == review_img.review_idx }">
-	        			<c:set var="img" value="${ review_img.review_img }" />
+	        		<c:if test="${ reviewImgList.size() != 0 && review_img.getReviewEntity().getReviewIdx() eq dto.reviewIdx}">
+	        			<c:set var="img" value="${ review_img.reviewImg }" />
 	        			<c:set var="isExistImg" value="1" />
 	        			<div class="col-5">
 		          			<div class="w-100" style=" padding-bottom: 75%; height: 0;">
-		          				<img src="${ img }" class="" alt="${ goodsnamelist.get(review.goods_idx) }"
+		          				<img src="${ img }" class="" alt="${ goods.goodsIdx }"
 		          				 style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
 		          			</div>
 	          			</div>
@@ -179,12 +168,12 @@
 	          
 			    <div class="col-7 float-right">
 			      <div class="card-body col-12 d-flex flex-column align-items-start justify-content-center px-1 py-0">
-			        <p class="card-title"><small>★ ${ dto.review_star }</small></p>
-			        <p class="card-text my-2">${ dto.review_contents }</p>
-			        <p class="card-text my-1 align-self-end"><small class="text-muted">${ dto.review_date }</small></p>
+			        <p class="card-title"><small>★ ${ dto.reviewStar }</small></p>
+			        <p class="card-text my-2">${ dto.reviewContents }</p>
+			        <p class="card-text my-1 align-self-end"><small class="text-muted">${ dto.reviewDate }</small></p>
 			        <!-- 등록된 답글이 있으면 답글보기 버튼이 노출됨 -->
-			        <c:if test="${ dto.review_isreplied == 1 }">
-			        	<p class="card-text align-self-end" onclick="popupHideAndShow('reply${ dto.review_idx}')">
+			        <c:if test="${ dto.reviewIsReplied == 1 }">
+			        	<p class="card-text align-self-end" onclick="popupHideAndShow('reply${ dto.reviewIdx}')">
 			        		<small class="text-muted" style="cursor: pointer;">답글보기</small>
 		        		</p>
 			        </c:if>
@@ -192,13 +181,13 @@
 			    </div>
 			  </div>
 			  <!-- 답글팝업 -->
-			<div class="card col-11 position-absolute d-none justify-contents-center" id="reply${ dto.review_idx }" 
+			<div class="card col-11 position-absolute d-none justify-contents-center" id="reply${ dto.reviewIdx }"
 			 style="top: 96%; right: 4%; z-index: 1500;">
 			  <div class="card-body">
-			    <p class="card-text my-1">${ dto.review_reply }</p>
-			    <p class="card-text my-1"><small class="text-muted">${ dto.review_reply_date }</small></p>
+			    <p class="card-text my-1">${ dto.reviewReply }</p>
+			    <p class="card-text my-1"><small class="text-muted">${ dto.reviewReplyDate }</small></p>
 			    <button class="btn btn-primary float-right mb-2" type="button" 
-			     onclick="popupHideAndShow('reply${ dto.review_idx}')">닫기</button>
+			     onclick="popupHideAndShow('reply${ dto.reviewIdx}')">닫기</button>
 			  </div>
 			</div>
 		</div>
@@ -220,28 +209,28 @@
           <c:forEach var="question" items="${ questionList }">
             <div class="card">
             	<!-- 질문 제목 -->
-              <div class="card-header p-0" id="heading${ question.question_idx }">
+              <div class="card-header p-0" id="heading${ question.questionIdx }">
                 <h2 class="mb-0">
                   <button class="btn btn-block text-left d-flex flex-row justify-content-between font-primary" type="button"
-                    data-toggle="collapse" data-target="#collapse${ question.question_idx }" aria-expanded="true" aria-controls="collapse${ question.question_idx }"
+                    data-toggle="collapse" data-target="#collapse${ question.questionIdx }" aria-expanded="true" aria-controls="collapse${ question.questionIdx }"
                     style="height: 40px">
-                    <span>${ question.question_title }</span><img src="/img/icon/down.png" alt="" class="img-fluid"
+                    <span>${ question.questionTitle }</span><img src="/img/icon/down.png" alt="" class="img-fluid"
                       style="width: 25px; height: 25px;">
                   </button>
                 </h2>
               </div>
               <!--아코디언 내용-->
-              <div id="collapse${ question.question_idx }" class="collapse font-primary" aria-labelledby="heading${ question.question_idx }" data-parent="#accordion">
+              <div id="collapse${ question.questionIdx }" class="collapse font-primary" aria-labelledby="heading${ question.questionIdx }" data-parent="#accordion">
                 <div class="card-body">
-                  <p class="card-text my-1">${ question.question_contents }</p>
-                  <p class="card-text my-1 float-right"><small class="text-muted">${ question.question_date }</small></p>
+                  <p class="card-text my-1">${ question.questionContents }</p>
+                  <p class="card-text my-1 float-right"><small class="text-muted">${ question.questionDate }</small></p>
                 </div>
                 <!-- 답변이 달려있으면 답변도 같이 노출 -->
-                <c:if test="${ question.question_isreplied == 1 }">
+                <c:if test="${ question.questionIsReplied == 1 }">
                 	<div class="card-body pt-1 border-top">
                 		<h6 class="card-title mt-1 mb-2">답변 드립니다.</h6>
-                		<p class="cart-text my-1">${ question.question_reply }</p>
-                		 <p class="card-text my-1 float-right"><small class="text-muted">${ question.question_reply_date }</small></p>
+                		<p class="cart-text my-1">${ question.questionReply }</p>
+                		 <p class="card-text my-1 float-right"><small class="text-muted">${ question.questionReplyDate }</small></p>
                 	</div>
                 </c:if>
               </div>
@@ -282,8 +271,8 @@
                 style="resize: none;"></textarea>
             </div>
             <!--자동으로 받음-->
-            <input type="hidden" name="user_idx" value="${ user_idx }">
-            <input type="hidden" name="goods_idx" value="${ goods.goods_idx }">
+            <input type="hidden" name="user_idx" value="${ userIdx }">
+            <input type="hidden" name="goods_idx" value="${ goods.goodsIdx }">
             
             <button type="button" class="btn btn-secondary text-dark col-3" onclick="popupHideAndShow('goodDetailInquiryPop')">취소 </button>
             <input type="submit" class="btn btn-dark text-light ml-2 col-6" onsubmit="return checkLogin();" value="문의하기">

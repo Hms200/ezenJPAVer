@@ -1,12 +1,9 @@
 package com.ezenjpa.ezenjpaver.entity;
 
-import com.ezenjpa.ezenjpaver.repository.UserRepository;
 import lombok.*;
 
 import javax.persistence.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "MALL_REVIEW")
@@ -86,7 +83,7 @@ public class ReviewEntity {
 
     @Column(name = "REVIEW_DATE")
     @Temporal(TemporalType.DATE)
-    private Date reivewDate;
+    private Date reviewDate;
 
     @Column(name = "REVIEW_REPLY_DATE")
     @Temporal(TemporalType.DATE)

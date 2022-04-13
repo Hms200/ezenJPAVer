@@ -60,7 +60,7 @@ public class CartEntity {
     @Column(name = "CART_IDX")
     private Long cartIdx;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "CART_LIST_IDX")
     private CartListEntity cartListEntity;
 
