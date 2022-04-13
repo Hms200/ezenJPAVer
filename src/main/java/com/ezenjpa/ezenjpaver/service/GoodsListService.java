@@ -3,10 +3,7 @@ package com.ezenjpa.ezenjpaver.service;
 import com.ezenjpa.ezenjpaver.DTO.CartDTO;
 import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
 import com.ezenjpa.ezenjpaver.entity.*;
-import com.ezenjpa.ezenjpaver.repository.CartRepository;
-import com.ezenjpa.ezenjpaver.repository.GoodsRepository;
-import com.ezenjpa.ezenjpaver.repository.OptionRepository;
-import com.ezenjpa.ezenjpaver.repository.QuestionRepository;
+import com.ezenjpa.ezenjpaver.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +13,9 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -31,6 +30,8 @@ public class GoodsListService {
     CartRepository cartRepository;
     @Autowired
     QuestionRepository questionRepository;
+    @Autowired
+    CartListRepository cartListRepository;
     @Autowired
     MainService mainService;
     @Autowired
@@ -53,9 +54,7 @@ public class GoodsListService {
         List<QuestionEntity> question = goods.getQuestionEntities();
         List<GoodsImgsEntity> goodsImgs = goods.getGoodsImgsEntities();
         List<ReviewImgsEntity> reviewImgs = new ArrayList<>();
-        review.forEach(r -> {
-            reviewImgs.add(r.getReviewImgsEntities());
-        });
+        review.forEach(r -> reviewImgs.add(r.getReviewImgsEntities()));
         List<OptionEntity> options = optionRepository.getAll();
 
         model.addAttribute("goods", goods)
@@ -88,9 +87,7 @@ public class GoodsListService {
         log.info("idx : {} 의 카트에 담긴 상품을 불러옵니다.", userIdx);
         List<CartEntity> cartList = cartRepository.getAllByCartIsDoneAndUserEntityUserIdx(0, userIdx);
         List<GoodsEntity> goodsList = new ArrayList<>();
-        cartList.forEach(cart -> {
-            goodsList.add(cart.getGoodsEntity());
-        });
+        cartList.forEach(cart -> goodsList.add(cart.getGoodsEntity()));
         List<OptionEntity> optionList = optionRepository.getAll();
         model.addAttribute("cartlist", cartList)
                 .addAttribute("goodslist", goodsList)
@@ -103,6 +100,37 @@ public class GoodsListService {
         CartEntity original = cartRepository.getById(cart.getCartIdx());
         original = (CartEntity) updateUtil.entityUpdateUtil(cart, original);
         cartRepository.save(original);
+    }
+
+    public void removeGoodsFromCart(HashMap<String, String> list){
+        Map<String, String> targets = new HashMap<>();
+        list.forEach((k,v) -> {
+            if(v.equals("true")){
+                targets.put(k, v);
+            }
+        });
+        log.info("다음 cart idx를 가진 항목을 삭제합니다. - {}",targets.keySet());
+        targets.forEach((k,v) -> cartRepository.deleteById(Long.valueOf(k)));
+    }
+
+    public Long listingGoods(HashMap<String, String> list){
+        CartListEntity newCartListEntity = new CartListEntity();
+        final CartListEntity newCartList = cartListRepository.save(newCartListEntity);
+        log.info("생성된 cart list idx - {}",newCartList.getCartListIdx());
+
+        Map<String, String> targets = new HashMap<>();
+        list.forEach((k,v) -> {
+            if(v.equals("true")){
+                targets.put(k, v);
+            }
+        });
+        log.info("다음 cart idx를 가진 항목을 하나의 리스트로 묶습니다. - {}",targets.keySet());
+        targets.forEach((k,v) -> {
+            CartEntity cart = cartRepository.getById(Long.valueOf(k));
+            cart.setCartListEntity(newCartList);
+            cartRepository.save(cart);
+        });
+        return newCartList.getCartListIdx();
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Slf4j
@@ -64,10 +65,24 @@ public class GoodsListController {
         }
     }
 
+    // 카트 옵션, 수량 변경
     @PostMapping("changeValueAction")
     @ResponseBody
     public void changeValue(@RequestBody CartDTO cart) throws InvocationTargetException, IllegalAccessException {
         goodsListService.changeValueOfItemInCart(cart);
+    }
+    // 카트 상품 삭제
+    @PostMapping("removeGoodsFromCartAction")
+    @ResponseBody
+    public void removeGoods(@RequestBody HashMap<String, String> cartIdxs){
+        goodsListService.removeGoodsFromCart(cartIdxs);
+    }
+    // 장바구니 개별항목 리스트로 묶기
+    @PostMapping("listingGoodsAction")
+    @ResponseBody
+    public String listingGoods(@RequestParam HashMap<String, String> cartIdxs){
+        Long cartListIdx = goodsListService.listingGoods(cartIdxs);
+        return String.valueOf(cartListIdx);
     }
 
 
