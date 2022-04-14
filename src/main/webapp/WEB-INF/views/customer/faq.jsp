@@ -16,7 +16,7 @@
 <body>
 <c:import url="../pcMain.jsp"></c:import>
 
-<div class="container-sm container-fluid d-flex flex-column align-items-center pl-0 pr-0" id="mainContainer" style="max-width: 520px; margin-top: 60px;">
+<div class="container-sm container-fluid d-flex flex-column align-items-center pl-0 pr-0" id="mainContainer" style="max-width: 520px; margin-top: 60px;max-height: 100vh;overflow: auto;">
 <c:import url="../header.jsp"></c:import>
 
 <!-- container -->
@@ -25,7 +25,7 @@
     <div class="container-sm container-fluid d-flex flex-row justify-content-around align-items-center text-decoration-none text-center border-bottom font-weight-bold" style="height: 90px;">
       <nav>
         <span>
-          <a href="" class="text-primary col-4">FAQ</a>
+          <a href="faq" class="text-primary col-4">FAQ</a>
         </span>
         <span>
           <a href="myAsk" class="text-black-50 col-4">내 문의내역</a>
@@ -51,12 +51,12 @@
     </div>
     <!-- faq아코디언 -->
     <div class="accordion container-sm container-fluid" id="accordion">
-      <c:forEach var="dto" items="${ getFaqList }">
+      <c:forEach var="dto" items="${ faq }">
       <div class="card my-1">
-          <button class="container-sm container-fluid btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapse_${dto.faq_idx}" aria-expanded="false" aria-controls="collapse" style="height: 60px;">
+          <button class="container-sm container-fluid btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapse_${dto.faqIdx}" aria-expanded="false" aria-controls="collapse" style="height: 60px;">
             <div class="d-flex justify-content-between">
               <span>
-                ${dto.faq_title}
+                ${dto.faqTitle}
               </span>
               <span>
                 <img src="/img/icon/down.png" alt="펼치기 아이콘" width="25px" height="25px">
@@ -64,15 +64,15 @@
             </div>
           </button>
           <!-- 답변 -->
-          <div class="collapse" id="collapse_${dto.faq_idx}" data-parent="#accordion">
+          <div class="collapse" id="collapse_${dto.faqIdx}" data-parent="#accordion">
             <div class="card-body">
               <span >
-                ${dto.faq_contents}
+                ${dto.faqContents}
               </span>
               <!-- 삭제버튼(관리자) -->
               <div class="d-flex justify-content-end">
-              <c:if test="${ user_id eq 'admin' }">
-              	<a href="faqDeleteAction?faq_idx=${ dto.faq_idx }">
+              <c:if test="${ userId eq 'admin' }">
+              	<a href="faqDeleteAction?faq_idx=${ dto.faqIdx }">
                 	<button class="btn btn-secondary w-5 mt-1 font-primary" style="height: 30px; cursor: pointer;">삭제</button>
                 </a>
        		  </c:if>
@@ -84,7 +84,7 @@
     </div>
     <!-- 등록 버튼(관리자) -->
     <div class="container-sm container-fluid d-flex justify-content-end">
-    <c:if test="${ user_id eq 'admin' }">
+    <c:if test="${ userId eq 'admin' }">
       <button class="btn btn-secondary mt-5" style="width: 100px; height: 40px; cursor: pointer;" onclick="popupHideAndShow(target = 'faq_write_popup')">등록</button>
       </c:if>
     </div>
@@ -108,11 +108,11 @@
 	          <div class="d-flex">
 	            <!-- 제목 -->
 	            <div>
-	              <input type="text" name="faq_title" placeholder="제목을 입력해주세요" class="text-dark nullcheck font-primary" style="width: 200px; height: 40px; margin-bottom: 5px; padding: 2px 15px;">
+	              <input type="text" name="faqTitle" placeholder="제목을 입력해주세요" class="text-dark nullcheck font-primary" style="width: 200px; height: 40px; margin-bottom: 5px; padding: 2px 15px;">
 	            </div>
 	              <!-- 카테고리 -->
 	            <div>
-	              <select name="faq_cat" class="font-primary" style="width: 100px; height: 38px;">
+	              <select name="faqCat" class="font-primary" style="width: 100px; height: 38px;">
 	                <option selected hidden>문의 종류</option>
 	                <option value="상품문의">상품문의</option>
 	                <option value="배송문의">배송문의</option>
@@ -121,7 +121,7 @@
 	            </div>
 	          </div>
 	   		 <!-- 내용 -->
-	            <textarea name="faq_contents" placeholder="내용을 입력해주세요" cols="30" rows="10" class="text-dark nullcheck mb-2 font-primary" style="width: 300px; height: 100px; resize: none;"></textarea>
+	            <textarea name="faqContents" placeholder="내용을 입력해주세요" cols="30" rows="10" class="text-dark nullcheck mb-2 font-primary" style="width: 300px; height: 100px; resize: none;"></textarea>
 	     	 <!-- 확인 버튼 -->
 	          <div class="d-flex align-items-center justify-content-center">
 	            <input type="submit" value="확인" class="btn btn-dark text-light form-control font-primary" style="width: 185px; margin: 20px 80px 0; cursor: pointer;">

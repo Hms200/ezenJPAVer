@@ -73,7 +73,7 @@ public class OauthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         mainService.setCartBedgeNumber();
 
         log.info("myPage로 redirect 합니다.");
-        response.sendRedirect("../myPage/myPage");
+        response.sendRedirect("/myPage/myPage");
 
     }
 }

@@ -3,7 +3,6 @@ package com.ezenjpa.ezenjpaver.controller;
 import com.ezenjpa.ezenjpaver.DTO.CartDTO;
 import com.ezenjpa.ezenjpaver.DTO.PurchaseDTO;
 import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
-import com.ezenjpa.ezenjpaver.entity.PurchaseEntity;
 import com.ezenjpa.ezenjpaver.service.GoodsListService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +99,7 @@ public class GoodsListController {
         String password = pw.get("inputtedPw");
         return  goodsListService.checkPw(password);
     }
-    // 구매 프로세스 진행 완료 후 구매기록 저장 & 장바구니항목 구매됨으로 변경 & 상품 구매카운터 증가
+    // 결제 진행 완료 후 구매기록 저장 & 장바구니항목 구매됨으로 변경 & 상품 구매카운터 증가
     // 각 상품 구매 후 남은 재고 없으면 품절처리 & 장바구니 배지 숫자 재설정
     @PostMapping("makePurchaseAction")
     @ResponseBody

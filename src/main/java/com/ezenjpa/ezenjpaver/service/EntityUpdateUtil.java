@@ -9,14 +9,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /*
-*  DTO에 담긴 정보로 Entity의 내용을 update 해줌.
+*  DTO에 담긴 정보로 Entity의 내용을 update
 *
 *  연관관계가 mapping 된 field의 entity정보를 가져오기 위해서는 해당 entity를 가져올 repository 에
-*  getBy**Idx 가 만들어져 있어야 함. dto로 새로운 entity만들어서 insert 도 가능
+*  getBy**Idx 가 만들어져 있어야 함.
+*
+*  DTO -> Entity converter로도 사용 가능
 *
 * */
 @Component
@@ -43,7 +44,7 @@ public class EntityUpdateUtil {
             String name = field.getName();
             for(Method method : dtoMethods){
                 method.setAccessible(true);
-                if(name.toUpperCase().equals(method.getName().replace("get", "").toUpperCase())){
+                if(name.equalsIgnoreCase(method.getName().replace("get", ""))){
                     updateData.put(name, method.invoke(dto));
                 }
             }
@@ -65,6 +66,7 @@ public class EntityUpdateUtil {
                     }if(method.getName().contains("set") && method.getName().contains("Entity") &&
                         method.getName().replace("set", "").replace("Entity", "").toUpperCase()
                                 .equals(name.replace("IDX",""))){
+
                         String repo = k.replace("Idx", "");
                         repo = repo.substring(0,1).toUpperCase() + repo.substring(1);
                         String methodname = k.substring(0,1).toUpperCase() + k.substring(1);

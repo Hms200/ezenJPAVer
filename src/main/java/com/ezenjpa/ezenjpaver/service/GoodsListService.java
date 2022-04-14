@@ -173,13 +173,13 @@ public class GoodsListService {
         final PurchaseEntity newPurchase = purchaseRepository.save(newPurchaseEntity);
 
         Long cartListIdx = newPurchase.getCartListEntity().getCartListIdx();
-        log.info("{}로 묶인 항목을 구매됨으로 변경, 구매한 수량만큼 구매카운터 증가, 재고감소, 재고소진지 품절처리 합니다.", cartListIdx);
+        log.info("cart list idx : {}로 묶인 항목을 구매됨으로 변경, 구매한 수량만큼 구매카운터 증가, 재고감소, 재고소진 시 품절처리 합니다.", cartListIdx);
         List<CartEntity> carts = cartRepository.getAllByCartIsDoneAndCartListEntityCartListIdx(0, cartListIdx);
         carts.forEach(cart -> {
             cart.setCartIsDone(1);
             GoodsEntity goods = cart.getGoodsEntity();
-            goods.setGoodsPurchased(goods.getGoodsPurchased()+cart.getCartAmount());
-            goods.setGoodsStock(goods.getGoodsStock()-cart.getCartAmount());
+            goods.setGoodsPurchased(goods.getGoodsPurchased() + cart.getCartAmount());
+            goods.setGoodsStock(goods.getGoodsStock() - cart.getCartAmount());
             if(goods.getGoodsStock()<=0){
                 goods.setGoodsStock(0);
                 goods.setGoodsOnSale(0);
