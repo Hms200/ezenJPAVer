@@ -1,6 +1,7 @@
 package com.ezenjpa.ezenjpaver.controller;
 
 import com.ezenjpa.ezenjpaver.DTO.FaqDTO;
+import com.ezenjpa.ezenjpaver.DTO.OneToOneDTO;
 import com.ezenjpa.ezenjpaver.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,17 @@ public class CustomerController {
     public String faqDeleteAction(@RequestParam("faq_idx") Long faqIdx) {
         customerService.deleteFaq(faqIdx);
         return "<script>alert('삭제되었습니다.'); location.href='/customer/faq';</script>";
+    }
+
+    @RequestMapping("ask")
+    public String ask(){
+        return "customer/ask";
+    }
+    // 문의작성
+    @PostMapping("qnaQuestionAction")
+    @ResponseBody
+    public String qnaQuestionAction(@ModelAttribute OneToOneDTO onetoone) throws InvocationTargetException, IllegalAccessException {
+        customerService.insertNewAsk(onetoone);
+        return "<script>alert('작성되었습니다.'); location.href='/customer/faq'</script>;";
     }
 }

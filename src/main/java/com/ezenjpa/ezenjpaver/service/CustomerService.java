@@ -1,8 +1,11 @@
 package com.ezenjpa.ezenjpaver.service;
 
 import com.ezenjpa.ezenjpaver.DTO.FaqDTO;
+import com.ezenjpa.ezenjpaver.DTO.OneToOneDTO;
 import com.ezenjpa.ezenjpaver.entity.FaqEntity;
+import com.ezenjpa.ezenjpaver.entity.OneToOneEntity;
 import com.ezenjpa.ezenjpaver.repository.FaqRepository;
+import com.ezenjpa.ezenjpaver.repository.OneToOneRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,8 @@ import org.springframework.ui.Model;
 
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -19,6 +24,8 @@ public class CustomerService {
 
     @Autowired
     FaqRepository faqRepository;
+    @Autowired
+    OneToOneRepository oneToOneRepository;
     @Autowired
     EntityUpdateUtil updateUtil;
 
@@ -47,4 +54,12 @@ public class CustomerService {
     public void deleteFaq(Long faqIdx){
         faqRepository.deleteById(faqIdx);
     }
+
+    public void insertNewAsk(OneToOneDTO oneToOne) throws InvocationTargetException, IllegalAccessException {
+        OneToOneEntity newAsk = new OneToOneEntity();
+        newAsk = (OneToOneEntity) updateUtil.entityUpdateUtil(oneToOne, newAsk);
+        newAsk.setOneToOneDate(Date.from(Instant.now()));
+        oneToOneRepository.save(newAsk);
+    }
+
 }

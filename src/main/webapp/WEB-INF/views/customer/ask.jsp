@@ -41,24 +41,24 @@
     <form action="qnaQuestionAction" method="post" name="qnaQuestionForm" onsubmit="return nullChecker();" style="margin-bottom:30px;">
       <div class="container-sm contaier-fluid d-flex flex-wrap justify-content-center my-3 font-primary ">
           <span class="col-12 font-weight-bold mb-2" style="padding-left:5px">
-            [${user_id}] 님
+            [${userId}] 님
           </span>
           
             <!-- 히든 input -->
             <!-- <input type="hidden" name="onetoone_idx" value="onetoone_idx"> -->
-            <input type="hidden" name="user_idx" value="${user_idx}">
+            <input type="hidden" name="userIdx" value="${userIdx}">
             <!-- <input type="hidden" name="onetoone_date" value="onetoone_date"> -->
             <!-- 제목 -->
-              <input type="text" name="onetoone_title" class="nullcheck pl-2 pr-0 col-7 mr-4" placeholder="제목을 입력해주세요" style="height: 38px;">     
+              <input type="text" name="onetooneTitle" class="nullcheck pl-2 pr-0 col-7 mr-4" placeholder="제목을 입력해주세요" style="height: 38px;">
             <!-- 카테고리 -->
-            <select name="onetoone_cat" class="col-4 rounded" style="height: 38px; padding: 5px;">
-              <option selected hidden>문의 종류</option>
+            <select name="onetooneCat" class="col-4 rounded" style="height: 38px; padding: 5px;">
+              <option selected>문의 종류</option>
               <option value="상품문의">상품문의</option>
               <option value="배송문의">배송문의</option>
               <option value="결제문의">결제문의</option>
             </select>
             <!-- 내용 -->
-              <textarea name="onetoone_contents" class="nullcheck mt-2 px-2 py-2 col-12 rounded" placeholder="내용을 입력해주세요" cols="30" rows="20" style="height: 300px; resize: none;"></textarea>
+              <textarea name="onetooneContents" class="nullcheck mt-2 px-2 py-2 col-12 rounded" placeholder="내용을 입력해주세요" cols="30" rows="20" style="height: 300px; resize: none;"></textarea>
         </div>
             <div class="container-sm container-fluid d-flex flex-row justify-content-center" style="height: 40px;">
                 <!-- 취소버튼 -->

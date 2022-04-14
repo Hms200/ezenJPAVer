@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,6 +89,7 @@ public class GoodsListService {
         log.info("상품 idx : {} 에 새로운 질문을 작성합니다.", question.getGoodsIdx());
         QuestionEntity newQuestion = new QuestionEntity();
         newQuestion = (QuestionEntity) updateUtil.entityUpdateUtil(question, newQuestion);
+        newQuestion.setQuestionDate(Date.from(Instant.now()));
         questionRepository.save(newQuestion);
     }
 
