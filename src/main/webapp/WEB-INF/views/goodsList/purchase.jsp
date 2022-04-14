@@ -38,21 +38,21 @@
     <c:forEach var="cart" items="${ cartlist }" varStatus="status">
     <div class="container d-flex flex-column py-1 px-3 mb-2 border-bottom">
       <div class="row my-2 mx-3">
-          <c:set var="goods" value="${ goodslist.get(status.index) }" scope="page"/>
-          <span id="goods_name">${ goods.goods_name }</span>
+          <c:set var="goods" value="${ goodslist[status.index] }" scope="page"/>
+          <span id="goods_name">${ goods.goodsName }</span>
       </div>
       <div class="d-flex flex-row justify-content-between mb-3">
-	        <a href="goodsDetail?goods_idx=${ goods.goods_idx }"><img src="${ goods.goods_thumb }" alt="Thumbnail of ${ goods.goods_name }" class="img-fluid ml-3" width="100px" height="100px"></a>
+	        <a href="goodsDetail?goods_idx=${ goods.goodsIdx }"><img src="${ goods.goodsThumb }" alt="Thumbnail of ${ goods.goodsName }" class="img-fluid ml-3" width="100px" height="100px"></a>
 	        <div class="d-flex flex-column" style="width: 200px; height: 100px;">
 		          <div class="d-flex flex-row justify-content-around my-auto">
 		            <span class="py-2" style="width: max-contents;">가격</span>
-		            <input type="text" class="form-control-plaintext text-right col-6 price py-2" id="goods_price" readonly value="${ cart.cart_total_price }">
+		            <input type="text" class="form-control-plaintext text-right col-6 price py-2" id="goods_price" readonly value="${ cart.cartTotalPrice }">
 		          </div>
 		         <div class="d-flex flex-row justify-content-around my-auto">
 		            <span>옵션</span>
-		            <span><c:set var="this_cart_option" value="${ cart.option_idx }" scope="page"/>
+		            <span><c:set var="this_cart_option" value="${ cart.getOptionEntity().getOptionIdx() }" scope="page"/>
 		            <c:forEach var="option" items="${ optionlist }">
-		            	<c:if test="${ this_cart_option eq option.option_idx }">${ option.option_name }+${ option.option_price }</c:if>
+		            	<c:if test="${ this_cart_option eq option.optionIdx }">${ option.optionName }+${ option.optionPrice }</c:if>
 		            </c:forEach> 
 		          <c:remove var="goods" scope="page"/>  
 		            </span>
@@ -72,16 +72,16 @@
         배송지 정보
       </span>
       <span id="nameAndPhone">
-        ${ userinfo.user_name } <br>
-        ${ userinfo.user_phone }
+        ${ userinfo.userName } <br>
+        ${ userinfo.userPhone }
        </span>
-        <input type="hidden" name="purchase_buyer_name" value="${ userinfo.user_name }">
-        <input type="hidden" name="purchase_buyer_phone" value="${ userinfo.user_phone }">
+        <input type="hidden" name="purchase_buyer_name" value="${ userinfo.userName }">
+        <input type="hidden" name="purchase_buyer_phone" value="${ userinfo.userPhone }">
       
       <span class="mt-1 mb-3" id="originalAddress">
-        ${ userinfo.user_address }
+        ${ userinfo.userAddress }
       </span>
-      <input type="hidden" name="purchase_buyer_address" value="${ userinfo.user_address }">
+      <input type="hidden" name="purchase_buyer_address" value="${ userinfo.userAddress }">
         <select class="form-select form-control w-100 font-primary " name="purchase_buyer_request" >
           <option selected>배송시 요청사항</option>
           <option value="문앞에 두고가주세요">문앞에 두고가주세요</option>
@@ -162,12 +162,10 @@
         </div>
         
         
-        <!-- <input type="button" class="btn btn-primary" id="cardA" value="카드" onclick="$('#purchase_buyer_payment').val('카드');">
-		<input type="button" class="btn btn-primary" id="cardB" value="무통장결제" onclick="$('#purchase_buyer_payment').val('무통장결제');">
-		<input type="hidden" name="purchase_buyer_payment"  id="purchase_buyer_payment" value="카드" > -->      
+
       </div>
       
-      <input type="hidden" name="user_idx" value="${ user_idx }">
+      <input type="hidden" name="user_idx" value="${ userIdx }">
       <input type="hidden" name="cart_list_idx" value="${ cartlistidx }">
       <div class="w-100 font-weight-bold text-center" style="width: 300px; height: 40px; margin-top: 30px; margin-bottom: 50px; ">
         <span><button class="btn btn-primary col-12" onclick=" popupHideAndShow('pwCheckPop')" style=" height: 40px;">결제하기</button></span>
@@ -214,10 +212,10 @@ window.onloade = calculateTotalPrice();
 		<c:set var = "count" value="${goodslist.size()}"/>
 		<c:forEach var ='i' begin='0' end='${count-1}'>
 			var ele = {};
-			ele.item_name = '${goodslist[i].goods_name}';
-			ele.unique = '${goodslist[i].goods_idx}';
-			ele.price = '${goodslist[i].goods_price}';
-			ele.cat1 = '${goodslist[i].goods_cat}';
+			ele.item_name = '${goodslist[i].goodsName}';
+			ele.unique = '${goodslist[i].goodsIdx}';
+			ele.price = '${goodslist[i].goodsPrice}';
+			ele.cat1 = '${goodslist[i].goodsCat}';
 			list.push(ele);
 		</c:forEach>
 	  console.log(list);
@@ -241,11 +239,11 @@ window.onloade = calculateTotalPrice();
 	<c:set var = "count" value="${goodslist.size()}"/>
 	<c:forEach var ='i' begin='0' end='${count-1}'>
 		var itemList = {};
-		itemList.item_name = '${goodslist[i].goods_name}';
-		itemList.unique = '${goodslist[i].goods_idx}';
-		itemList.qty = '${cartlist[i].cart_amount}';
-		itemList.price = '${goodslist[i].goods_price}';
-		itemList.cat1 = '${goodslist[i].goods_cat}';
+		itemList.item_name = '${goodslist[i].goodsName}';
+		itemList.unique = '${goodslist[i].goodsIdx}';
+		itemList.qty = '${cartlist[i].cartAmount}';
+		itemList.price = '${goodslist[i].goodsPrice}';
+		itemList.cat1 = '${goodslist[i].goodsCat}';
 		statsList.push(itemList);
 	</c:forEach>
 	
@@ -253,12 +251,12 @@ window.onloade = calculateTotalPrice();
 	const goods_price = $('span[id=final_price]').text();
 	const nameCount = $('span[id=goods_name]').length - 1 ;
 	let goods_name = $('span[id=goods_name]')[0].textContent
-	const goods_count = '${carlist[0].cart_amount}';
-	const goods_idx = "${goodslist[0].goods_idx}";
-	const user_name = "${userinfo.user_name}";
-	const user_email = "${userinfo.user_email}";
-	const user_address = "${userinfo.user_address}";
-	const user_phone = "${userinfo.user_phone}";
+	const goods_count = '${carlist[0].cartAmount}';
+	const goods_idx = "${goodslist[0].goodsIdx}";
+	const user_name = "${userinfo.userName}";
+	const user_email = "${userinfo.userEmail}";
+	const user_address = "${userinfo.userAddress}";
+	const user_phone = "${userinfo.userPhone}";
 	//물건이 1개이상일경우 맨처음 물건이름출력 외 (초과된 수) 개 
 	if(nameCount > 0 ){
 		goods_name +=  " "+"외" + nameCount +"개";

@@ -527,7 +527,7 @@ function calculateTotalPrice(){
 }
 // 구매페이지 비밀번호 확인
 function checkPw(){
-	const inputtedPw = document.getElementById('inputtedPw').value;
+	let inputtedPw = document.getElementById('inputtedPw').value;
 	if(inputtedPw == null || inputtedPw === ''){
 		alert('비밀번호를 입력해주세요');
 		return false;
@@ -543,7 +543,7 @@ function checkPw(){
 		async: false,
 		data: data,
 		success: function(result){
-			if(result !== 'true'){
+			if(result != 'true'){
 				alert('비밀번호를 재확인 해주세요');
 				inputtedPw = '';
 				}else{
@@ -579,14 +579,14 @@ function makingPurchase(){
 	
 	let formData = {};
 	
-	formData.cart_list_idx = cartListIdx;
-	formData.user_idx = userIdx;
-	formData.purchase_total_price = totalPrice;
-	formData.purchase_buyer_name = buyerName;
-	formData.purchase_buyer_phone = buyerPhone;
-	formData.purchase_buyer_address = buyerAddress;
-	formData.purchase_payment = payment();
-	formData.purchase_buyer_request = buyerRequest;
+	formData.cartListIdx = cartListIdx;
+	formData.userIdx = userIdx;
+	formData.purchaseTotalPrice = totalPrice;
+	formData.purchaseBuyerName = buyerName;
+	formData.purchaseBuyerPhone = buyerPhone;
+	formData.purchaseBuyerAddress = buyerAddress;
+	formData.purchasePayment = payment();
+	formData.purchaseBuyerRequest = buyerRequest;
 	
 	formData = JSON.stringify(formData);
 	console.log(formData);
@@ -598,10 +598,8 @@ function makingPurchase(){
 		processData: false,
 		async: false,
 		data: formData,
-		success: function(result){
+		success: function(){
 			console.log('구매프로세스 완료');
-			document.getElementById('bedgeNumber').innerText = Number(result);
-			bedgeHideAndShow()
 			// mypage 구매기록 페이지로 보내기.
 			location.href = '../myPage/purchaseList';
 		},

@@ -1,11 +1,13 @@
 package com.ezenjpa.ezenjpaver.service;
 
 import com.ezenjpa.ezenjpaver.DTO.CartDTO;
+import com.ezenjpa.ezenjpaver.DTO.PurchaseDTO;
 import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
 import com.ezenjpa.ezenjpaver.entity.*;
 import com.ezenjpa.ezenjpaver.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -33,11 +35,17 @@ public class GoodsListService {
     @Autowired
     CartListRepository cartListRepository;
     @Autowired
+    UserRepository userRepository;
+    @Autowired
+    PurchaseRepository purchaseRepository;
+    @Autowired
     MainService mainService;
     @Autowired
     EntityUpdateUtil updateUtil;
     @Autowired
     HttpSession session;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
 
     public Model getAllGoodsList(Model model) {
@@ -131,6 +139,56 @@ public class GoodsListService {
             cartRepository.save(cart);
         });
         return newCartList.getCartListIdx();
+    }
+
+    public Model getListedGoods(Long cartListIdx, Model model){
+        log.info("구매 대상 목록을 불러옵니다.");
+        List<CartEntity> cartList = cartRepository.getAllByCartIsDoneAndCartListEntityCartListIdx(0, cartListIdx);
+        List<GoodsEntity> goodsList = new ArrayList<>();
+        List<OptionEntity> optionList = optionRepository.getAll();
+        UserEntity userInfo = cartList.get(0).getUserEntity();
+        cartList.forEach(cart -> {
+            GoodsEntity goods = cart.getGoodsEntity();
+            goodsList.add(goods);
+        });
+        model.addAttribute("cartlist", cartList)
+                .addAttribute("goodslist", goodsList)
+                .addAttribute("optionlist", optionList)
+                .addAttribute("userinfo", userInfo)
+                .addAttribute("cartlistidx", cartListIdx);
+        return model;
+    }
+
+    public Boolean checkPw(String password){
+        Long userIdx = Long.valueOf((String) session.getAttribute("userIdx"));
+        log.info("user idx : {}  의 비밀번호 일치여부를 확인합니다.", userIdx);
+        UserEntity user = userRepository.getById(userIdx);
+        return passwordEncoder.matches(password,user.getUserPw());
+    }
+
+    public void makePurchase(PurchaseDTO purchase) throws InvocationTargetException, IllegalAccessException {
+        log.info("구매기록을 저장합니다.");
+        PurchaseEntity newPurchaseEntity = new PurchaseEntity();
+        newPurchaseEntity = (PurchaseEntity) updateUtil.entityUpdateUtil(purchase, newPurchaseEntity);
+        final PurchaseEntity newPurchase = purchaseRepository.save(newPurchaseEntity);
+
+        Long cartListIdx = newPurchase.getCartListEntity().getCartListIdx();
+        log.info("{}로 묶인 항목을 구매됨으로 변경, 구매한 수량만큼 구매카운터 증가, 재고감소, 재고소진지 품절처리 합니다.", cartListIdx);
+        List<CartEntity> carts = cartRepository.getAllByCartIsDoneAndCartListEntityCartListIdx(0, cartListIdx);
+        carts.forEach(cart -> {
+            cart.setCartIsDone(1);
+            GoodsEntity goods = cart.getGoodsEntity();
+            goods.setGoodsPurchased(goods.getGoodsPurchased()+cart.getCartAmount());
+            goods.setGoodsStock(goods.getGoodsStock()-cart.getCartAmount());
+            if(goods.getGoodsStock()<=0){
+                goods.setGoodsStock(0);
+                goods.setGoodsOnSale(0);
+            }
+            cartRepository.save(cart);
+            goodsRepository.save(goods);
+        });
+        mainService.setCartBedgeNumber();
+
     }
 
 }

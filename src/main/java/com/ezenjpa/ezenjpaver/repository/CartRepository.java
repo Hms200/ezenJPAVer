@@ -22,5 +22,7 @@ public interface CartRepository extends JpaRepository<CartEntity, Long> {
     List<CartEntity> getAllByCartIsDoneAndUserEntityUserIdx(int cartIsDone, Long userIdx);
     //장바구니에 담긴 항목 갯수 가져오기
     Long countCartEntitiesByCartIsDoneAndUserEntityUserIdx(int cartIsDone, Long userIdx);
+    //cart list idx로 가져오기
+    List<CartEntity> getAllByCartIsDoneAndCartListEntityCartListIdx(int cartIsDont, Long cartListIdx);
 
 }
