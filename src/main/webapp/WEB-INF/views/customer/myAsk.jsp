@@ -15,7 +15,7 @@
 <body>
 <c:import url="../pcMain.jsp"></c:import>
 
-<div class="container-sm container-fluid d-flex flex-column align-items-center pl-0 pr-0" id="mainContainer" style="max-width: 520px; margin-top: 60px; ">
+<div class="container-sm container-fluid d-flex flex-column align-items-center pl-0 pr-0" id="mainContainer" style="max-width: 520px; margin-top: 60px;max-height: 100vh;overflow: auto; ">
 <c:import url="../header.jsp"></c:import>
 
   <!-- container -->
@@ -28,7 +28,7 @@
           <a href="/customer/faq" class="text-black-50 col-4">FAQ</a>
         </span>
         <span>
-          <a href="" class="text-primary col-4">내 문의내역</a>
+          <a href="/customer/myAsk" class="text-primary col-4">내 문의내역</a>
         </span>
         <span>
           <a href="/customer/ask" class="text-black-50 col-4">문의하기</a>
@@ -41,11 +41,11 @@
       <span>
         <select name="onetoone_cat" onchange="this.form.submit();" class="font-primary rounded px-1 py-1" style="width: 100px; height: 38px;">
           <option >문의종류</option>
-          <option value="전체문의" <c:if test="${ onetoone_cat == '전체문의'}"> selected </c:if> >전체문의</option>
-          <option value="상품문의" <c:if test="${ onetoone_cat == '상품문의'}"> selected </c:if> >상품문의</option>
-          <option value="배송문의" <c:if test="${ onetoone_cat == '배송문의'}"> selected </c:if> >배송문의</option>
-          <option value="결제문의" <c:if test="${ onetoone_cat == '결제문의'}"> selected </c:if> >결제문의</option>
-         <%--  <option value="개별상품" <c:if test="${ onttoont_cat == '개별상품'}"> selected </c:if> >개별상품</option> --%>
+          <option value="전체문의" <c:if test="${ onetooneCat == '전체문의'}"> selected </c:if> >전체문의</option>
+          <option value="상품문의" <c:if test="${ onetooneCat == '상품문의'}"> selected </c:if> >상품문의</option>
+          <option value="배송문의" <c:if test="${ onetooneCat == '배송문의'}"> selected </c:if> >배송문의</option>
+          <option value="결제문의" <c:if test="${ onetooneCat == '결제문의'}"> selected </c:if> >결제문의</option>
+          <option value="개별상품" <c:if test="${ onttoontCat == '개별상품'}"> selected </c:if> >개별상품</option>
         </select>
       </span>
     </form>
@@ -53,18 +53,18 @@
     <!-- 문의내역 아코디언 -->
    
     <div class="accordion container-sm container-fluid my-2 font-secondary" id="accordion" >
-     <c:forEach var="dto" items="${ getOneToOneList }">
+     <c:forEach var="dto" items="${ oneToone }">
       <div class="card my-2">
-          <button class="container-sm container-fluid btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapse_${dto.onetoone_idx}" aria-expanded="false" aria-controls="collapse">
+          <button class="container-sm container-fluid btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapse_${dto.onetooneIdx}" aria-expanded="false" aria-controls="collapse">
             <div class="d-flex flex-wrap justify-content-between">
               <span class="col-8 text-left px-0 mb-1">
-                ${dto.onetoone_title}
+                ${dto.onetooneTitle}
               </span>
               <span class="col-4 text-right px-0 font-secondary">
-                ${dto.onetoone_date}
+                ${dto.onetooneDate}
               </span>
               <span class="col-10 text-left font-primary px-0">
-                ${dto.onetoone_contents}
+                ${dto.onetooneContents}
               </span>
               <span class="col-2 text-right pr-0 pt-5">
                 <img src="/img/icon/down.png" alt="펼치기 아이콘" width="25px" height="25px">
@@ -72,35 +72,29 @@
             </div>
           </button>
           <!--답변 -->
-          <div class="collapse" id="collapse_${dto.onetoone_idx}" data-parent="#accordion">
+          <div class="collapse" id="collapse_${dto.onetooneIdx}" data-parent="#accordion">
             <div class="card-body">
               <span >
-                ${dto.onetoone_reply}
+                ${dto.onetooneReply}
               </span>
             </div>
           </div>
       </div>
       </c:forEach>
-      <%-- <c:if test="${ !onetoone_cat || onetoone_cat == '개별상품' }">
-      <c:forEach var="question" items="${ questionList }">
+      <c:if test="${ onetoone_cat == null || onetoone_cat eq '개별상품' || onetoone_cat eq '전체문의'}">
+      <c:forEach var="question" items="${ question }">
       <div class="card my-2">
-          <button class="container-sm container-fluid btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapse_${question.question_idx}" aria-expanded="false" aria-controls="collapse">
+          <button class="container-sm container-fluid btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#collapse_${question.questionIdx}" aria-expanded="false" aria-controls="collapse">
             <div class="d-flex flex-wrap justify-content-between">
               <span class="col-8 text-left px-0 mb-1">
-                ${question.question_title}
+                ${question.questionTitle}
               </span>
               <span class="col-4 text-right px-0 font-secondary">
-              <c:set var="idx" value="${ question.goods_idx }"  />
-              	<c:forEach var="name" items="${ goodsnamelist }">
-              		<c:if test="${ name.containsKey(idx) }">
-              			${ name.get(idx) }에 등록된 질문입니다.&nbsp;
-              		</c:if>
-              	</c:forEach>
-              	<c:remove var="idx"/>
-                ${question.question_date}
+                      ${ question.getGoodsEntity().getGoodsName() }에 등록된 질문입니다.&nbsp;
+                      ${question.questionDate}
               </span>
               <span class="col-10 text-left font-primary px-0">
-                ${question.question_contents}
+                ${question.questionContents}
               </span>
               <span class="col-2 text-right pr-0 pt-5">
                 <img src="/img/icon/down.png" alt="펼치기 아이콘" width="25px" height="25px">
@@ -108,16 +102,16 @@
             </div>
           </button>
           <!--답변 -->
-          <div class="collapse" id="collapse_${question.question_idx}" data-parent="#accordion">
+          <div class="collapse" id="collapse_${question.questionIdx}" data-parent="#accordion">
             <div class="card-body">
               <span >
-                ${question.question_reply}
+                ${question.questionReply}
               </span>
             </div>
           </div>
       </div>
       </c:forEach>
-      </c:if> --%>
+      </c:if>
   </div>
   </div>
     

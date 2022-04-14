@@ -9,10 +9,6 @@ import java.util.List;
 public interface FaqRepository extends JpaRepository<FaqEntity, Long> {
 
     FaqEntity getByFaqIdx(Long faqIdx);
-
-    @Query("select f from FaqEntity f")
-    List<FaqEntity> getAll();
-
     List<FaqEntity> getFaqEntitiesByFaqCat(String cat);
 
 }

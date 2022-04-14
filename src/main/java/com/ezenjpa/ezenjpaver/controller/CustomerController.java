@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.InvocationTargetException;
 
 @Controller
@@ -60,5 +61,17 @@ public class CustomerController {
     public String qnaQuestionAction(@ModelAttribute OneToOneDTO onetoone) throws InvocationTargetException, IllegalAccessException {
         customerService.insertNewAsk(onetoone);
         return "<script>alert('작성되었습니다.'); location.href='/customer/faq'</script>;";
+    }
+
+    @RequestMapping("myAsk")
+    public String myAsk(Model model) {
+        model = customerService.myAsk(model);
+        return "customer/myAsk";
+    }
+    // my ask 카테고리 필터
+    @GetMapping("myAskCatAction")
+    public String myAskCatAction(@RequestParam String onetoone_cat, Model model) {
+        model = customerService.getAskByCat(onetoone_cat, model);
+        return "customer/myAsk";
     }
 }

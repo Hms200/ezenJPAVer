@@ -65,7 +65,7 @@ public class GoodsListService {
         List<GoodsImgsEntity> goodsImgs = goods.getGoodsImgsEntities();
         List<ReviewImgsEntity> reviewImgs = new ArrayList<>();
         review.forEach(r -> reviewImgs.add(r.getReviewImgsEntities()));
-        List<OptionEntity> options = optionRepository.getAll();
+        List<OptionEntity> options = optionRepository.findAll();
 
         model.addAttribute("goods", goods)
                 .addAttribute("reviewList", review)
@@ -99,7 +99,7 @@ public class GoodsListService {
         List<CartEntity> cartList = cartRepository.getAllByCartIsDoneAndUserEntityUserIdx(0, userIdx);
         List<GoodsEntity> goodsList = new ArrayList<>();
         cartList.forEach(cart -> goodsList.add(cart.getGoodsEntity()));
-        List<OptionEntity> optionList = optionRepository.getAll();
+        List<OptionEntity> optionList = optionRepository.findAll();
         model.addAttribute("cartlist", cartList)
                 .addAttribute("goodslist", goodsList)
                 .addAttribute("optionlist", optionList);
@@ -148,7 +148,7 @@ public class GoodsListService {
         log.info("구매 대상 목록을 불러옵니다.");
         List<CartEntity> cartList = cartRepository.getAllByCartIsDoneAndCartListEntityCartListIdx(0, cartListIdx);
         List<GoodsEntity> goodsList = new ArrayList<>();
-        List<OptionEntity> optionList = optionRepository.getAll();
+        List<OptionEntity> optionList = optionRepository.findAll();
         UserEntity userInfo = cartList.get(0).getUserEntity();
         cartList.forEach(cart -> {
             GoodsEntity goods = cart.getGoodsEntity();

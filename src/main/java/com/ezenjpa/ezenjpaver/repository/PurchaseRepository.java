@@ -9,4 +9,5 @@ import java.util.List;
 public interface PurchaseRepository extends JpaRepository<PurchaseEntity, Long> {
     PurchaseEntity getByPurchaseIdx(Long purchaseIdx);
     PurchaseEntity getByUserEntityUserIdx(Long userIdx);
+
 }

@@ -40,42 +40,7 @@ class MainServiceTest {
     ReviewRepository reviewRepository;
     GoodsEntity goodsEntity;
 
-    @Test
-    @Comment("카트숫자 설정. 로그인 안했을 때")
-    void setCartBedgeNumber() {
 
-
-        Integer userIdx;
-        Long cartBedgeNum;
-
-
-
-        try {
-            userIdx = Integer.parseInt(String.valueOf(session.getAttribute("userIdx")));
-
-        }catch (Exception e){
-
-            userIdx = null;
-        }
-
-        if(userIdx != null){
-
-            try {
-                cartBedgeNum = userRepository.countUserEntitiesByUserIdxAndCartEntitiesNotNull(Long.valueOf(userIdx));
-
-            }catch (NullPointerException e){
-
-                cartBedgeNum = 0L;
-            }
-            session.setAttribute("cart", cartBedgeNum);
-
-        }else{
-            cartBedgeNum = 0L;
-            session.setAttribute("cart", cartBedgeNum);
-
-        }
-        Assertions.assertEquals(0L, cartBedgeNum, "");
-    }
 
     @Test
     @Comment("메인용 공지사항 리스트 가져오기")

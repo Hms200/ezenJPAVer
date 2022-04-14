@@ -44,7 +44,7 @@
             </div>
             
                 <div class="search d-flex flex-row">
-                <input type="text" name="searchText" value="검색" class="border border-1 form-control" style="width: 220px;" >
+                <input type="text" name="searchText" placeholder="검색할 Id를 입력하세요" class="border border-1 form-control" style="width: 220px;" >
                 <button class="btn form-control p-1 pb-2 " type="submit" style="margin-left: -45px;">
                   <img src="/img/icon/search.png" alt="" style="width: 18px; height: 18px;">
                </button>
@@ -71,13 +71,13 @@
                
                 <c:forEach var="user" items="${ userlist }"> 
                 	
-			               <tr class="word-break" style="cursor:pointer;" onclick="location.href='memberListpopup?user_idx=${ user.get('USER_IDX')}'">
-			                <td>${ user.get("USER_IDX") }</td>
-			               <td class="">${ user.get("USER_ID") }</td>
-			               <td>${ user.get("USER_NAME") }</td>
-			               <td>${ user.get("TOTAL_AMOUNT") }</td>
-			               <td>${ user.get("TOTAL_PRICE") }</td>
-			               <fmt:formatDate var="date" value="${ user.get('JOIN_DATE') }" pattern="YY.MM.dd"/>
+			               <tr class="word-break" style="cursor:pointer;" onclick="location.href='memberListpopup?user_idx=${ user.userIdx}'">
+			                <td>${ user.userIdx }</td>
+			               <td class="">${ user.userId }</td>
+			               <td>${ user.userName }</td>
+			               <td>${ user.totalAmount }</td>
+			               <td>${ user.totalPrice }</td>
+			               <fmt:formatDate var="date" value="${ user.joinDate }" pattern="YY.MM.dd"/>
 			               <td>${ date }</td>
 			              </tr>
               	

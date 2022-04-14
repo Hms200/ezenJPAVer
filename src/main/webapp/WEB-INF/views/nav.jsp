@@ -26,8 +26,8 @@
          </div>  
 
          <div class="d-flex flex-column justify-content-center align-itmes-center text-center mb-1"
-          <c:if test="${ user_id != 'admin' }">onclick="location.href='../myPage/myPage'"</c:if>
-          <c:if test="${ user_id eq 'admin' }">onclick="location.href='../admin/main'"</c:if>
+          <c:if test="${ userId != 'admin' }">onclick="location.href='../myPage/myPage'"</c:if>
+          <c:if test="${ userId eq 'admin' }">onclick="location.href='../admin/main'"</c:if>
            style="cursor: pointer;">
              <img class="mx-auto" src="/img/icon/my.png" alt="마이페이지" width="25px" height="25px" >
              <span class="text-dark"style="font-size: 11px;">마이페이지</span>
