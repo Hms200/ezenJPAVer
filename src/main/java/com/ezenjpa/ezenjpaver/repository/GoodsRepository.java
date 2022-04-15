@@ -17,5 +17,9 @@ public interface GoodsRepository extends JpaRepository<GoodsEntity, Long> {
     List<GoodsEntity> getGoodsEntitiesByGoodsOnSale(int goodsOnSale);
     // 메인검색용 상품검색
     List<GoodsEntity> getGoodsEntitiesByGoodsNameContaining(String searchText);
+    // 카테고리로 찾기
+    List<GoodsEntity> getGoodsEntitiesByGoodsCat(String cat);
+    // 해당 이벤트이 모든 상품
+    List<GoodsEntity> getGoodsEntitiesByGoodsOnEvent(Events event);
 
 }

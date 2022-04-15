@@ -35,20 +35,20 @@
       </p>
       <div class="d-flex felx-row justify-content-around mb-3 form-group">
         <span class="font-weight-bold text-dark font-primary pt-2" >상품이름</span>
-        <input type="text" id="goods_name" name="goods_name" class="nullcheck form-control col-7 font-primary" placeholder="상품이름을 입력해주세요" >
+        <input type="text" id="goods_name" name="goodsName" class="nullcheck form-control col-7 font-primary" placeholder="상품이름을 입력해주세요" >
         
       </div>
       <div class="d-flex felx-row justify-content-around mb-3 form-group">
         <span class="font-weight-bold text-dark font-primary pt-2" >정품가격</span>
-        <input type="text" id="goods_price" name="goods_price" class="nullcheck form-control col-7 font-primary" placeholder="상품가격을 입력해주세요" >
+        <input type="text" id="goods_price" name="goodsPrice" class="nullcheck form-control col-7 font-primary" placeholder="상품가격을 입력해주세요" >
       </div>
       <div class="d-flex felx-row justify-content-around mb-4 form-group">
         <span class="font-weight-bold text-dark font-primary pt-2" >판매수량</span>
-        <input type="text" id="goods_stock" name="goods_stock" class="nullcheck form-control col-7 font-primary" placeholder="상품수량을 입력해주세요" >
+        <input type="text" id="goods_stock" name="goodsStock" class="nullcheck form-control col-7 font-primary" placeholder="상품수량을 입력해주세요" >
       </div>
       <div class="d-flex felx-row justify-content-between form-group mx-4 mb-4">
         <span class="font-weight-bold font-primary pt-2" >카테고리 선택</span>
-        <select class="text-dark form-control col-6 font-primary" name="goods_cat" id="goods_cat" >
+        <select class="text-dark form-control col-6 font-primary" name="goodsCat" id="goods_cat" >
           <option selected>카테고리 선택</option>
           <option value="candle">캔들</option>
           <option value="warmer">캔들워머</option>
@@ -57,9 +57,9 @@
         </select>
       </div>
       <div class="d-none">
-      <input type="hidden" id="goods_thumb" name="goods_thumb" value="">
-      <input type="hidden" id="goods_detail" name="goods_detail" value="">
-      <input type="hidden" id="goods_onsale" name="goods_onsale" value="1">
+      <input type="hidden" id="goods_thumb" name="goodsThumb" value="">
+      <input type="hidden" id="goods_detail" name="goodsDetail" value="">
+      <input type="hidden" id="goods_onsale" name="goodsOnSale" value="1">
       </div>
       </form>
       

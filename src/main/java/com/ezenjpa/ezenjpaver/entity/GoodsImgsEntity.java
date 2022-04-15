@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "MALL_GOODS_IMGS")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

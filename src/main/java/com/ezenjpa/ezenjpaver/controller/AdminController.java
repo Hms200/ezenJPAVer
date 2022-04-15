@@ -1,16 +1,22 @@
 package com.ezenjpa.ezenjpaver.controller;
 
+import com.ezenjpa.ezenjpaver.DTO.GoodsDTO;
 import com.ezenjpa.ezenjpaver.DTO.OneToOneDTO;
 import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
 import com.ezenjpa.ezenjpaver.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
-import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("admin")
@@ -75,5 +81,84 @@ public class AdminController {
         return "등록되었습니다.";
     }
 
+    @RequestMapping("stock")
+    public String stock(Pageable pageable, Model model) {
+        if(!model.containsAttribute("goodslist")) {
+            model = adminService.getGoodsListForAdmin(pageable, model);
+        }
+        model.addAttribute("entireItemCardMode", 2);
+        return "admin/stock";
+    }
+    // stock search & onEvent search
+    @GetMapping("adminStockSearchAction")
+    public String stockSearch(@RequestParam(required = false) String searchText,
+                              @RequestParam String search_cat,
+                              @RequestParam String page,
+                              Model model) {
+        model = adminService.stockSearchFilter(searchText, search_cat, model);
+        if(page.equals("stock")) {
+            return stock(Pageable.unpaged(), model);
+        }else {
+            return eventConfig(Pageable.unpaged(), model);
+        }
+    }
+    // stock 품절처리
+    @PostMapping("inventorySoldOutAction")
+    @ResponseBody
+    public void soldOutGoods(@RequestBody HashMap<String, Boolean> param) {
+        adminService.makeGoodsSoldOut(param);
+    }
+    // stock 상품 삭제
+    @PostMapping("inventoryDeleteAction")
+    @ResponseBody
+    public String deleteGoods(@RequestParam HashMap<String, String> param) {
+        adminService.deleteGoodsOnDB(param);
+        return "<script>alert('삭제되었습니다.');location.href='stock';</script>";
+    }
+    // stock 발주
+    @PostMapping("inventoryOrderAction")
+    @ResponseBody
+    public void orderGoods(@RequestBody HashMap<String, String> param) {
+        log.info("{}",param.toString());
+        adminService.orderGoods(param);
+    }
+
+    @RequestMapping("goods")
+    public String goods() {
+        return "admin/goods";
+    }
+    // 섬네일 등록
+    @PostMapping("uploadGoodsThumbAction")
+    @ResponseBody
+    public String uploadeThumb(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        return adminService.uploadThumbnail(multipartFile);
+    }
+    // 상세이미지 등록
+    @PostMapping("uploadGoodsDetailAction")
+    @ResponseBody
+    public String uploadDetail(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        return adminService.uploadDetail(multipartFile);
+    }
+    // 상품등록
+    @PostMapping("productRegisterAction")
+    @ResponseBody
+    public String uploadGoods(@RequestBody GoodsDTO goods) throws InvocationTargetException, IllegalAccessException {
+        return adminService.insertGoods(goods);
+    }
+    // 상품이미지등록
+    @PostMapping("uploadGoodsIMGSAction")
+    @ResponseBody
+    public String uploadGoodsImgs(@RequestParam("img1")MultipartFile fileOne,
+                                  @RequestParam("img2")MultipartFile fileTow,
+                                  @RequestParam("img3")MultipartFile fileThree,
+                                  @RequestParam("goods_idx")String idx) {
+        Long goodsIdx = Long.valueOf(idx);
+        List<MultipartFile> files = new ArrayList<>();
+        files.add(fileOne);
+        files.add(fileTow);
+        files.add(fileThree);
+        adminService.uploadGoodsImgs(files, goodsIdx);
+        return "<script>alert('등록되었습니다.'); location.href='goods';</script>";
+    }
 
 }
