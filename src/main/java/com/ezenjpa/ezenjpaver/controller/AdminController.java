@@ -161,4 +161,17 @@ public class AdminController {
         return "<script>alert('등록되었습니다.'); location.href='goods';</script>";
     }
 
+    @RequestMapping("review")
+    public String review(Pageable pageable, Model model) {
+        model = adminService.reviewList(pageable, model);
+        return "admin/review";
+    }
+    // 리뷰 답글 등록
+    @PostMapping("registReviewReplyAction")
+    @ResponseBody
+    public String registReviewReply(@RequestBody HashMap<String, String> param) {
+        adminService.registReviewReply(param);
+        return "등록되었습니다.";
+    }
+
 }

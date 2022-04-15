@@ -40,6 +40,8 @@ public class AdminService {
     @Autowired
     GoodsImgsRepository goodsImgsRepository;
     @Autowired
+    ReviewRepository reviewRepository;
+    @Autowired
     PagenationService pagenation;
     @Autowired
     FileService fileService;
@@ -241,6 +243,22 @@ public class AdminService {
             newImg.setGoodsImg(path);
             goodsImgsRepository.save(newImg);
         });
+    }
+
+    public Model reviewList(Pageable pageable, Model model){
+        Page<ReviewEntity> reviewEntityPage = reviewRepository.findAll(pageable);
+        List<ReviewEntity> reviews = reviewEntityPage.getContent();
+        pagenation = pagenation.pagenationInfo(reviewEntityPage, 5);
+        model.addAttribute("reviewlist",reviews)
+                .addAttribute("pages", pagenation);
+        return model;
+    }
+
+    public void registReviewReply(HashMap<String, String> reply){
+        ReviewEntity target = reviewRepository.getById(Long.valueOf(reply.get("review_idx")));
+        target.setReviewReply(reply.get("review_reply"));
+        target.setReviewReplyDate(Date.from(Instant.now()));
+        reviewRepository.save(target);
     }
 
 }
