@@ -3,6 +3,7 @@ package com.ezenjpa.ezenjpaver.controller;
 import com.ezenjpa.ezenjpaver.DTO.GoodsDTO;
 import com.ezenjpa.ezenjpaver.DTO.OneToOneDTO;
 import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
+import com.ezenjpa.ezenjpaver.enums.Statement;
 import com.ezenjpa.ezenjpaver.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,5 +174,35 @@ public class AdminController {
         adminService.registReviewReply(param);
         return "등록되었습니다.";
     }
+
+    @GetMapping("transaction")
+    public String transaction(@RequestParam(required = false) String statement,
+                              Pageable pageable, Model model) {
+        try {
+            model = adminService.transactionFiltered(statement, model);
+        } catch (Exception e) {
+            log.error("{}",e);
+            model = adminService.transaction(pageable, model);
+        }
+        log.info("{}",model.toString());
+        return "admin/transaction";
+    }
+
+    @GetMapping("transactionpop")
+    public String transactionpop(@RequestParam String purchase_idx, Model model) {
+        int purchaseIdx = Integer.parseInt(purchase_idx);
+        model = adminService.transactionDetail(purchaseIdx, model);
+        return "admin/transactionpop";
+    }
+    // 주문상태 변경
+    @PostMapping("changeStatementAction")
+    @ResponseBody
+    public String changeStatement(@RequestBody HashMap<String, String> param) {
+        int purchase_idx = Integer.parseInt(param.get("purchase_idx"));
+        String purchase_statement = param.get("purchase_statement");
+        String returnString = adminService.changeStatement(purchase_idx, purchase_statement);
+        return returnString;
+    }
+
 
 }

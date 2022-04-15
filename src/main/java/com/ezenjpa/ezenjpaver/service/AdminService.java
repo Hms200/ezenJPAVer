@@ -5,6 +5,7 @@ import com.ezenjpa.ezenjpaver.VO.UserListForAdmin;
 import com.ezenjpa.ezenjpaver.entity.*;
 import com.ezenjpa.ezenjpaver.enums.Events;
 import com.ezenjpa.ezenjpaver.enums.ImgCat;
+import com.ezenjpa.ezenjpaver.enums.Statement;
 import com.ezenjpa.ezenjpaver.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +39,8 @@ public class AdminService {
     GoodsImgsRepository goodsImgsRepository;
     @Autowired
     ReviewRepository reviewRepository;
+    @Autowired
+    PurchaseRepository purchaseRepository;
     @Autowired
     PagenationService pagenation;
     @Autowired
@@ -260,5 +260,35 @@ public class AdminService {
         target.setReviewReplyDate(Date.from(Instant.now()));
         reviewRepository.save(target);
     }
+
+    public Model transactionFiltered(String statement, Model model){
+        List<PurchaseEntity> purchaseList;
+        Optional<List<PurchaseEntity>> purchaseEntityOptional = Optional.ofNullable(
+                purchaseRepository.getAllByPurchaseStatement(Statement.getStatementByDescription(statement)));
+        if(purchaseEntityOptional.isPresent()){
+            model.addAttribute("purchaselist", purchaseEntityOptional.get());
+            return model;
+        }else{
+            if(statement.equals("최신순")){
+                purchaseList = purchaseRepository.findAll(Sort.by(Sort.Direction.DESC, "purchaseDate"));
+            }else if(statement.equals("오래된순")){
+                purchaseList = purchaseRepository.findAll(Sort.by(Sort.Direction.ASC, "purchaseDate"));
+            }else{
+                purchaseList = purchaseRepository.findAll();
+            }
+            model.addAttribute("purchaselist", purchaseList);
+            return model;
+        }
+    }
+
+    public Model transaction(Pageable pageable, Model model){
+        Page<PurchaseEntity> purchaseEntityPage = purchaseRepository.findAll(pageable);
+        pagenation = pagenation.pagenationInfo(purchaseEntityPage, 5);
+        model.addAttribute("purchaselist", purchaseEntityPage.getContent())
+                .addAttribute("pages", pagenation);
+        return model;
+    }
+
+
 
 }
