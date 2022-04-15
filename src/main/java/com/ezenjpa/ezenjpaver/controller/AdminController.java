@@ -189,19 +189,16 @@ public class AdminController {
     }
 
     @GetMapping("transactionpop")
-    public String transactionpop(@RequestParam String purchase_idx, Model model) {
-        int purchaseIdx = Integer.parseInt(purchase_idx);
-        model = adminService.transactionDetail(purchaseIdx, model);
+    public String transactionpop(@RequestParam Long purchase_idx, Model model) {
+        model = adminService.transactionDetail(purchase_idx, model);
         return "admin/transactionpop";
     }
     // 주문상태 변경
     @PostMapping("changeStatementAction")
     @ResponseBody
-    public String changeStatement(@RequestBody HashMap<String, String> param) {
-        int purchase_idx = Integer.parseInt(param.get("purchase_idx"));
-        String purchase_statement = param.get("purchase_statement");
-        String returnString = adminService.changeStatement(purchase_idx, purchase_statement);
-        return returnString;
+    public String changeStatement(@RequestBody HashMap<String, String> param) throws Exception {
+        adminService.changeStatement(param);
+        return "변경되었습니다.";
     }
 
 

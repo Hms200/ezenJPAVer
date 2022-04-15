@@ -42,6 +42,10 @@ public class AdminService {
     @Autowired
     PurchaseRepository purchaseRepository;
     @Autowired
+    CartRepository cartRepository;
+    @Autowired
+    OptionRepository optionRepository;
+    @Autowired
     PagenationService pagenation;
     @Autowired
     FileService fileService;
@@ -289,6 +293,25 @@ public class AdminService {
         return model;
     }
 
+    public Model transactionDetail(Long purchaseIdx, Model model){
+        PurchaseEntity purchase = purchaseRepository.getById(purchaseIdx);
+        List<CartEntity> cartList = cartRepository.getAllByCartIsDoneAndCartListEntityCartListIdx(1, purchase.getCartListEntity().getCartListIdx());
+        List<OptionEntity> optionList = optionRepository.findAll();
+        model.addAttribute("purchase", purchase)
+                .addAttribute("cartlist", cartList)
+                .addAttribute("optionlist", optionList);
+        return model;
+    }
+
+    public void changeStatement(HashMap<String, String> list) throws Exception {
+        PurchaseEntity target = purchaseRepository.getById(Long.valueOf(list.get("purchase_idx")));
+        Optional<Statement> stmt = Optional.ofNullable(Statement.getStatementByDescription(list.get("purchase_statement")));
+        if(stmt.isPresent()){
+            target.setPurchaseStatement(stmt.get().getDescription());
+        }else {
+            throw new Exception("잘못된 상태 지정");
+        }
+    }
 
 
 }
