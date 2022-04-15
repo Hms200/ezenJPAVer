@@ -1,5 +1,6 @@
 package com.ezenjpa.ezenjpaver.entity;
 
+import com.ezenjpa.ezenjpaver.DTO.OneToOneDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,5 +51,19 @@ public class OneToOneEntity {
     @Temporal(TemporalType.DATE)
     @Column(name = "ONETOONE_REPLY_DATE")
     private Date oneToOneReplyDate;
+
+    public OneToOneDTO convertToOneToOneDTO(OneToOneEntity oneToOne){
+        return OneToOneDTO.builder()
+                .onetooneIdx(oneToOne.getOneToOneIdx())
+                .userIdx(oneToOne.getUserEntity().getUserIdx())
+                .onetooneCat(oneToOne.getOneToOneCat())
+                .onetooneTitle(oneToOne.getOneToOneTitle())
+                .onetooneContents(oneToOne.getOneToOneContents())
+                .onetooneDate(oneToOne.getOneToOneDate())
+                .onetooneIsreplied(oneToOne.getOntToOneIsReplied())
+                .onetooneReply(oneToOne.getOneToOneReply())
+                .onetooneReplyDate(oneToOne.getOneToOneReplyDate())
+                .build();
+    }
 
 }

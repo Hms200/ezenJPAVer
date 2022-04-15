@@ -1,13 +1,16 @@
 package com.ezenjpa.ezenjpaver.controller;
 
+import com.ezenjpa.ezenjpaver.DTO.OneToOneDTO;
+import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
 import com.ezenjpa.ezenjpaver.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
+import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("admin")
@@ -46,4 +49,31 @@ public class AdminController {
         model = adminService.userInfo(userIdx, model);
         return "admin/memberListpopup";
     }
+
+    @GetMapping("qnaList")
+    public String qnaList(@RequestParam("Qna")String cat,Pageable pageable, Model model){
+        if(cat.equals("Qna")){
+            model = adminService.getQuestionList(pageable, model);
+        }else{
+            model = adminService.getOneToOneList(pageable, model);
+        }
+        return "admin/qnaList";
+    }
+
+    // qna 답글달기
+    @PostMapping("registerQuestionReplyAction")
+    @ResponseBody
+    public String registerQnaReply(@RequestBody QuestionDTO question){
+        adminService.registerQnaReply(question);
+        return "등록되었습니다.";
+    }
+    // 1:1질문 답글달기
+    @PostMapping("registerOneToOneReplyAction")
+    @ResponseBody
+    public String registerOneToOneReply(@RequestBody OneToOneDTO oneToOne){
+        adminService.registerOneToOneReply(oneToOne);
+        return "등록되었습니다.";
+    }
+
+
 }

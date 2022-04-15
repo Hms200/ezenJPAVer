@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,11 +30,9 @@ public class NoticeService {
     public Model noticePaging(Pageable pageable, Model model){
         log.info("{}번째 페이지 공지사항리스트 가져옵니다.", pageable.getPageNumber()+1);
         Page<NoticeEntity> noticeEntityPage = noticeRepository.findAll(pageable);
-        List<NoticeDTO> noticeDTO = new ArrayList<>();
-         noticeEntityPage.getContent().forEach(page -> {
-            NoticeDTO notice = page.convertToNoticeDTO(page);
-            noticeDTO.add(notice);
-        });
+        List<NoticeDTO> noticeDTO = noticeEntityPage.getContent().stream()
+                        .map(entity -> entity.convertToNoticeDTO(entity))
+                        .collect(Collectors.toList());
         model.addAttribute("noticeList",noticeDTO);
         pagenation = pagenation.pagenationInfo(noticeEntityPage, 5);
         model.addAttribute("pages", pagenation);

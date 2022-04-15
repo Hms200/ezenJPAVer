@@ -1,5 +1,6 @@
 package com.ezenjpa.ezenjpaver.entity;
 
+import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
 import lombok.*;
 import org.hibernate.mapping.ToOne;
 
@@ -54,5 +55,18 @@ public class QuestionEntity {
     private Date questionReplyDate;
 
 
+    public QuestionDTO convertToQuestionDTO(QuestionEntity question){
+        return QuestionDTO.builder()
+                .questionIdx(question.getQuestionIdx())
+                .userIdx(question.getUserEntity().getUserIdx())
+                .goodsIdx(question.getGoodsEntity().getGoodsIdx())
+                .questionTitle(question.getQuestionTitle())
+                .questionContents(question.getQuestionContents())
+                .questionDate(question.getQuestionDate())
+                .questionIsreplied(question.getQuestionIsReplied())
+                .questionReply(question.getQuestionReply())
+                .questionReplyDate(question.getQuestionReplyDate())
+                .build();
+    }
 
 }

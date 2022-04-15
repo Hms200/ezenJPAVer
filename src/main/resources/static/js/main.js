@@ -779,13 +779,13 @@ function registerQuestionReply(){
 	const replyContents = document.getElementsByName('question_reply')[0].value;
 	const questionIdx = document.getElementById('targetIdx').value;
 	const mode = document.getElementById('mode').value;
-	
-	let formData = {};
-	formData.question_idx = questionIdx;
-	formData.question_reply = replyContents;
-	formData = JSON.stringify(formData);
-	console.log(formData);
+
 	if(mode == 'Qna'){
+		let formData = {};
+		formData.questionIdx = questionIdx;
+		formData.questionReply = replyContents;
+		formData = JSON.stringify(formData);
+		console.log(formData);
 		jQuery.ajax({
 				url: "registerQuestionReplyAction",
 				type: "POST",
@@ -804,6 +804,11 @@ function registerQuestionReply(){
 				},
 			});
 		}else{
+		let formData = {};
+		formData.onetooneIdx = questionIdx;
+		formData.onetooneReply = replyContents;
+		formData = JSON.stringify(formData);
+		console.log(formData);
 			jQuery.ajax({
 				url: "registerOneToOneReplyAction",
 				type: "POST",

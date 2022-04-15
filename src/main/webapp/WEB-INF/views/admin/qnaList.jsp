@@ -49,19 +49,19 @@
         <tbody>
         <c:if test="${ mode == 'Qna' }">
         <c:forEach var="question" items="${ questionlist }">
-            <tr data-toggle="collapse" data-target="#q${ question.question_idx }" aria-expanded="false" aria-controls="collapse" data-parent="#questionTable" style="cursor: pointer;">
-              <th class="col-6 font-primary px-2">${ goodslist.get(question.goods_idx) }</th>
-              <td class="text-right font-weight-light font-primary px-0">${ userlist.get(question.user_idx) } &numsp;&numsp;<small> ${ question.question_date }</small></td>
+            <tr data-toggle="collapse" data-target="#q${ question.questionIdx }" aria-expanded="false" aria-controls="collapse" data-parent="#questionTable" style="cursor: pointer;">
+              <th class="col-6 font-primary px-2">${ question.getGoodsEntity().getGoodsIdx() }</th>
+              <td class="text-right font-weight-light font-primary px-0">${ question.getUserEntity().getUserIdx() } &numsp;&numsp;<small> ${ question.questionDate }</small></td>
               <td colspan="2">
 	              <div class="d-flex justify-content-end">
-	                <input type="button" value="답글등록" class="btn btn-secondary font-primary" id="${ question.question_idx }" onclick="popupHideAndShowForQnaList(event)" style="width: 80px; height: 30px; cursor: pointer;">
+	                <input type="button" value="답글등록" class="btn btn-secondary font-primary" id="${ question.questionIdx }" onclick="popupHideAndShowForQnaList(event)" style="width: 80px; height: 30px; cursor: pointer;">
 	              </div>
               </td>
             </tr>
             <!-- 아코디언 -->
-            <tr class="collapse font-primary" id="q${ question.question_idx }">
+            <tr class="collapse font-primary" id="q${ question.questionIdx }">
               
-              <td colspan="3" style="width: 260px;">${ question.question_contents }</td>
+              <td colspan="3" style="width: 260px;">${ question.questionContents }</td>
             </tr>
           
          </c:forEach>
@@ -69,19 +69,19 @@
          
          <c:if test="${ mode == 'OneToOne' }">
          	<c:forEach var="question" items="${ questionlist }">
-            <tr data-toggle="collapse" data-target="#q${ question.onetoone_idx }" aria-expanded="false" aria-controls="collapse" data-parent="#questionTable" style="cursor: pointer;">
-              <th class="col-6 font-primary px-2">${ question.onetoone_cat }</th>
-              <td class="text-right font-weight-light font-primary px-0">${ userlist.get(question.user_idx) } &numsp;&numsp;<small> ${ question.onetoone_date }</small></td>
+            <tr data-toggle="collapse" data-target="#q${ question.onetooneIdx }" aria-expanded="false" aria-controls="collapse" data-parent="#questionTable" style="cursor: pointer;">
+              <th class="col-6 font-primary px-2">${ question.onetooneCat }</th>
+              <td class="text-right font-weight-light font-primary px-0">${ question.getUserEntity().getUserIdx() } &numsp;&numsp;<small> ${ question.onetooneDate }</small></td>
               <td colspan="2">
               <div class="d-flex justify-content-end">
-                <input type="button" value="답글등록" class="btn btn-secondary font-primary" id="${ question.onetoone_idx }" onclick="popupHideAndShowForQnaList(event)" style="width: 80px; height: 30px; cursor: pointer;">
+                <input type="button" value="답글등록" class="btn btn-secondary font-primary" id="${ question.onetooneIdx }" onclick="popupHideAndShowForQnaList(event)" style="width: 80px; height: 30px; cursor: pointer;">
               </div>
             </td>
             </tr>
             <!-- 아코디언 -->
-            <tr class="collapse font-primary" id="q${ question.onetoone_idx }">
+            <tr class="collapse font-primary" id="q${ question.onetooneIdx }">
               
-              <td colspan="3" style="width: 260px;">${ question.onetoone_contents }</td>
+              <td colspan="3" style="width: 260px;">${ question.onetooneContents }</td>
             </tr>
           
          </c:forEach>
@@ -96,17 +96,17 @@
 		      <nav class="mx-auto">
 		        <ul class="pagination justify-content-center ">
 					<!-- 현재 페이지가 페이지표시기의 페이지 표시 수 보다 작으면 뒤로가기버튼 disable -->
-		          <li class="page-item <c:if test="${ pages.currentPage <= 5 }">disabled</c:if>">
-		            <a class="page-link" href="qnaList?currentPage=${ pages.beginPagenation - 1}">&lang;</a>
+		          <li class="page-item <c:if test="${ pages.number <= 5 || pages.isFirstPage == true }">disabled</c:if>">
+		            <a class="page-link" href="qnaList?page=${ pages.beginPage - 2}&size=10">&lang;</a>
 		          </li>
-				  <c:forEach var="page" begin="${ pages.beginPagenation }" end="${ pages.endPagenation }" step="1">
-		          <li class="page-item <c:if test="${ pages.currentPage == page }">active</c:if>">
-		            <a class="page-link" href="qnaList?currentPage=${ page }">${ page }</a>
+				  <c:forEach var="page" begin="${ pages.beginPage }" end="${ pages.endPage }" step="1">
+		          <li class="page-item <c:if test="${ pages.number == page }">active</c:if>">
+		            <a class="page-link" href="qnaList?page=${ page-1 }&size=10">${ page }</a>
 		          </li>
 		          </c:forEach>
 		          <!-- 마지막페이지까지 표시되면 앞으로 가기 표시 안됨 -->
-		          <li class="page-item <c:if test="${ pages.countOfPages eq pages.endPagenation }">disabled</c:if>">
-		            <a class="page-link" href="qnaList?currentPage=${ pages.endPagenation+1}">&rang;</a>
+		          <li class="page-item <c:if test="${ pages.totalPages+1 eq pages.endPage || pages.hasNextPage == false }">disabled</c:if>">
+		            <a class="page-link" href="qnaList?page=${ pages.endPage}&size=10">&rang;</a>
 		          </li>
 		        </ul>
 		      </nav>
@@ -119,17 +119,17 @@
 		      <nav class="mx-auto">
 		        <ul class="pagination justify-content-center ">
 					<!-- 현재 페이지가 페이지표시기의 페이지 표시 수 보다 작으면 뒤로가기버튼 disable -->
-		          <li class="page-item <c:if test="${ pages.currentPage <= 5 }">disabled</c:if>">
-		            <a class="page-link" href="qnaList?cat=oneToone&currentPage=${ pages.beginPagenation - 1}">&lang;</a>
+		          <li class="page-item <c:if test="${ pages.number <= 5 || pages.isFirstPage == true}">disabled</c:if>">
+		            <a class="page-link" href="qnaList?cat=oneToone&page=${ pages.beginPage - 2}&size=10">&lang;</a>
 		          </li>
-				  <c:forEach var="page" begin="${ pages.beginPagenation }" end="${ pages.endPagenation }" step="1">
-		          <li class="page-item <c:if test="${ pages.currentPage == page }">active</c:if>">
-		            <a class="page-link" href="qnaList?cat=oneToone&currentPage=${ page }">${ page }</a>
+				  <c:forEach var="page" begin="${ pages.beginPage }" end="${ pages.endPage }" step="1">
+		          <li class="page-item <c:if test="${ pages.number == page }">active</c:if>">
+		            <a class="page-link" href="qnaList?cat=oneToone&page=${ page-1 }&size=10">${ page }</a>
 		          </li>
 		          </c:forEach>
 		          <!-- 마지막페이지까지 표시되면 앞으로 가기 표시 안됨 -->
-		          <li class="page-item <c:if test="${ pages.countOfPages eq pages.endPagenation }">disabled</c:if>">
-		            <a class="page-link" href="qnaList?cat=oneToone&currentPage=${ pages.endPagenation+1}">&rang;</a>
+		          <li class="page-item <c:if test="${ pages.totalPages+1 eq pages.endPage || pages.hasNextPage == false }">disabled</c:if>">
+		            <a class="page-link" href="qnaList?cat=oneToone&page=${ pages.endPage}&size=10">&rang;</a>
 		          </li>
 		        </ul>
 		      </nav>
