@@ -649,7 +649,6 @@ function uploadDetail(){
 		success: function(result){
 			if(result == false){
 				alert('등록에 실패하였습니다.');
-				detail = null;
 			}
 			console.log('파일등록 성공 : '+result);
 			document.getElementsByName('goods_detail')[0].value = result;
@@ -700,8 +699,8 @@ function updateTransactionStatement(event){
 		if(selectValue == '#'){
 			location.href = 'transaction';
 		}else{
-			data.purchase_idx = purchaseIdx;
-			data.purchase_statement = selectValue;
+			data.purchaseIdx = purchaseIdx;
+			data.purchaseStatement = selectValue;
 			data = JSON.stringify(data);
 			console.log(data);
 			jQuery.ajax({
@@ -722,8 +721,8 @@ function updateTransactionStatement(event){
 			});
 		}
 	}else{
-		data.purchase_idx = purchaseIdx;
-		data.purchase_statement = targetId;
+		data.purchaseIdx = purchaseIdx;
+		data.purchaseStatement = targetId;
 		data = JSON.stringify(data);
 		console.log(data);
 		jQuery.ajax({
@@ -752,8 +751,8 @@ function registReviewReply(){
 	const reviewIdx = document.getElementById('targetIdx').value;
 	
 	let formData = {};
-	formData.review_idx = reviewIdx;
-	formData.review_reply = replyContents;
+	formData.reviewIdx = reviewIdx;
+	formData.reviewReply = replyContents;
 	formData = JSON.stringify(formData);
 	console.log(formData);
 	jQuery.ajax({

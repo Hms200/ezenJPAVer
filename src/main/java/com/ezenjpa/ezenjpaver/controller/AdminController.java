@@ -3,7 +3,6 @@ package com.ezenjpa.ezenjpaver.controller;
 import com.ezenjpa.ezenjpaver.DTO.GoodsDTO;
 import com.ezenjpa.ezenjpaver.DTO.OneToOneDTO;
 import com.ezenjpa.ezenjpaver.DTO.QuestionDTO;
-import com.ezenjpa.ezenjpaver.enums.Statement;
 import com.ezenjpa.ezenjpaver.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -200,6 +198,37 @@ public class AdminController {
         adminService.changeStatement(param);
         return "변경되었습니다.";
     }
+
+    @RequestMapping("eventConfig")
+    public String eventConfig(Pageable pageable, Model model) {
+        if(model.containsAttribute("goodslist") == false) {
+            model = adminService.getGoodsListForAdmin(pageable, model);
+        }
+        model.addAttribute("entireItemCardMode", 2);
+        return "admin/eventConfig";
+    }
+    // 할인상품등록
+    @PostMapping("discountProductAction")
+    @ResponseBody
+    public String registerEventDiscount(@RequestParam HashMap<String, String> list) {
+        adminService.registerEventDiscount(list);
+        return "<script>alert('변경되었습니다.'); location.href='eventConfig';</script>";
+    }
+    // 이벤트진행중 상품등록
+    @PostMapping("eventProductAction")
+    @ResponseBody
+    public String registerEventEvent(@RequestParam HashMap<String, String> list) {
+        adminService.registerEventEvent(list);
+        return "<script>alert('변경되었습니다.'); location.href='eventConfig';</script>";
+    }
+    // 추천상품등록
+    @PostMapping("recommendProductAction")
+    @ResponseBody
+    public String registerEventRecommend(@RequestParam HashMap<String, String> list) {
+        adminService.registerEventRecommend(list);
+        return "<script>alert('변경되었습니다.'); location.href='eventConfig';</script>";
+    }
+
 
 
 }

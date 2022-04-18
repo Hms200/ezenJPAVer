@@ -25,20 +25,6 @@
  <!-- container -->
     <div class="container-sm container-fluid d-flex flex-column justify-content-center align-items-center postion-relative" id="mainContainer" style="max-width: 520px; margin-top: 60px;">
    		<div class="font-weight-bold pl-3 d-flex my-2 w-100 pb-2 pt-3 text-black-50">주문목록</div>
-         <!-- title container 
-         <div class="container-fluid d-flex flex-row mb-4 border-bottom border-dark-50" style="height: 60px;">
-            
-                <div class="col-1 my-3" onclick="location.href='../admin'" style="cursor: pointer;">
-                    <img src="/img/icon/뒤로가기 (2).png" alt="뒤로가기">
-                </div>
-            
-                <div class="col-11 my-3 py-1 text-center font-weight-bold" style="font-size: 16px;">
-                    주문목록
-                </div>
-            </div>-->
-
-            <!-- drop down 정렬버튼 -->
-            <!-- href 에 해당상품만 노출되도록 서버에 요청하는 request 작성해야함. -->
             <div class="col-11 d-flex flex-row justify-content-around mb-4" style="flex: none;">
                 <div class="dropdown col-5 px-2">
                     <a class="btn btn-outline-secondary dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
@@ -87,12 +73,12 @@
                     <tbody>
                     	<c:forEach var="list" items="${ purchaselist }">
                         <tr class="font-primary">
-                            <th scope="row" onclick="location.href='transactionpop?purchase_idx=${ list.purchase_idx}'" style="cursor: pointer;">${ list.purchase_idx }</th>
+                            <th scope="row" onclick="location.href='transactionpop?purchase_idx=${ list.purchaseIdx}'" style="cursor: pointer;">${ list.purchaseIdx }</th>
                             <td>
-	                            ${ userlist.get(list.user_idx) }
+	                            ${ list.getUserEntity().getUserId() }
                             </td>
-                            <td>${ list.purchase_statement }</td>
-                            <td class="font-secondary">${ list.purchase_date }</td>
+                            <td>${ list.purchaseStatement }</td>
+                            <td class="font-secondary">${ list.purchaseDate }</td>
                         </tr>
                         </c:forEach>                        
                     </tbody>
@@ -106,17 +92,17 @@
 		      <nav class="mx-auto">
 		        <ul class="pagination justify-content-center ">
 					<!-- 현재 페이지가 페이지표시기의 페이지 표시 수 보다 작으면 뒤로가기버튼 disable -->
-		          <li class="page-item <c:if test="${ pages.currentPage <= 5 }">disabled</c:if>">
-		            <a class="page-link" href="transaction?currentPage=${ pages.beginPagenation - 1}">&lang;</a>
+		          <li class="page-item <c:if test="${ pages.number <= 5 || pages.isFirstPage == true}">disabled</c:if>">
+		            <a class="page-link" href="transaction?page=${ pages.beginPage - 2}">&lang;</a>
 		          </li>
-				  <c:forEach var="page" begin="${ pages.beginPagenation }" end="${ pages.endPagenation }" step="1">
-		          <li class="page-item <c:if test="${ pages.currentPage == page }">active</c:if>">
-		            <a class="page-link" href="transaction?currentPage=${ page }">${ page }</a>
+				  <c:forEach var="page" begin="${ pages.beginPage }" end="${ pages.endPage }" step="1">
+		          <li class="page-item <c:if test="${ pages.number == page }">active</c:if>">
+		            <a class="page-link" href="transaction?page=${ page-1 }&size=10">${ page }</a>
 		          </li>
 		          </c:forEach>
 		          <!-- 마지막페이지까지 표시되면 앞으로 가기 표시 안됨 -->
-		          <li class="page-item <c:if test="${ pages.countOfPages eq pages.endPagenation }">disabled</c:if>">
-		            <a class="page-link" href="transaction?currentPage=${ pages.endPagenation+1}">&rang;</a>
+		          <li class="page-item <c:if test="${ pages.totalPages+1 eq pages.endPage || pages.hasNextPage == false }">disabled</c:if>">
+		            <a class="page-link" href="transaction?page=${ pages.endPage}&size=10">&rang;</a>
 		          </li>
 		        </ul>
 		      </nav>

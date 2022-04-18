@@ -250,6 +250,7 @@ public class AdminService {
     }
 
     public Model reviewList(Pageable pageable, Model model){
+        log.info("리뷰 목록을 불러옵니다.");
         Page<ReviewEntity> reviewEntityPage = reviewRepository.findAll(pageable);
         List<ReviewEntity> reviews = reviewEntityPage.getContent();
         pagenation = pagenation.pagenationInfo(reviewEntityPage, 5);
@@ -259,6 +260,7 @@ public class AdminService {
     }
 
     public void registReviewReply(HashMap<String, String> reply){
+        log.info("review에 답글을 등록합니다.");
         ReviewEntity target = reviewRepository.getById(Long.valueOf(reply.get("review_idx")));
         target.setReviewReply(reply.get("review_reply"));
         target.setReviewReplyDate(Date.from(Instant.now()));
@@ -270,14 +272,18 @@ public class AdminService {
         Optional<List<PurchaseEntity>> purchaseEntityOptional = Optional.ofNullable(
                 purchaseRepository.getAllByPurchaseStatement(Statement.getStatementByDescription(statement)));
         if(purchaseEntityOptional.isPresent()){
+            log.info("{} 로 필터링한 목록을 표시힙니다.", statement);
             model.addAttribute("purchaselist", purchaseEntityOptional.get());
             return model;
         }else{
             if(statement.equals("최신순")){
+                log.info("최신순으로 목록을 표시합니다.");
                 purchaseList = purchaseRepository.findAll(Sort.by(Sort.Direction.DESC, "purchaseDate"));
             }else if(statement.equals("오래된순")){
+                log.info("오래된 순으로 목록을 표시합니다.");
                 purchaseList = purchaseRepository.findAll(Sort.by(Sort.Direction.ASC, "purchaseDate"));
             }else{
+                log.info("맞는 조건을 찾지 필터링 하지 않은 목록을 표시합니다.");
                 purchaseList = purchaseRepository.findAll();
             }
             model.addAttribute("purchaselist", purchaseList);
@@ -311,6 +317,36 @@ public class AdminService {
         }else {
             throw new Exception("잘못된 상태 지정");
         }
+    }
+
+    public void registerEventDiscount(HashMap<String, String> list){
+        list.forEach((k,v) -> {
+            if(v.equals("on")){
+                GoodsEntity target = goodsRepository.getById(Long.valueOf(k));
+                target.setGoodsOnEvent(Events.DISCOUN);
+                goodsRepository.save(target);
+            }
+        });
+    }
+
+    public void registerEventEvent(HashMap<String, String> list){
+        list.forEach((k,v) -> {
+            if(v.equals("on")){
+                GoodsEntity target = goodsRepository.getById(Long.valueOf(k));
+                target.setGoodsOnEvent(Events.EVENT);
+                goodsRepository.save(target);
+            }
+        });
+    }
+
+    public void registerEventRecommend(HashMap<String, String> list){
+        list.forEach((k,v) -> {
+            if(v.equals("on")){
+                GoodsEntity target = goodsRepository.getById(Long.valueOf(k));
+                target.setGoodsOnEvent(Events.MD_PICK);
+                goodsRepository.save(target);
+            }
+        });
     }
 
 

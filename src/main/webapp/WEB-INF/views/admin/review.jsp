@@ -61,11 +61,11 @@
 	          <div class="column no-gutters my-0">
 	          	<c:set var="isExistImg" value="0" />
 	        	<c:forEach var="review_img" items="${ reviewimgslist }">
-	        		<c:if test="${ review.review_idx == review_img.review_idx }">
-	        			<c:set var="img" value="${ review_img.review_img }" />
+	        		<c:if test="${ review.reviewIdx == review.getReviewImgsEntity().getReivewIdx() }">
+	        			<c:set var="img" value="${ review.getReivewImgsEntity().getRievewImg() }" />
 	        			<c:set var="isExistImg" value="1" />
 	          			<div class="col-12" style="position: relative; padding-bottom: 75%; height: 0;">
-	          			<img src="${ img }" class="" alt="${ goodsnamelist.get(review.goods_idx) }" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+	          			<img src="${ img }" class="" alt="${ review.getGoodsEntity().getGoodsIdx() }" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
 	          			</div>
 	          			<c:remove var="img"/>
 	          		</c:if>	
@@ -78,12 +78,12 @@
 	          		<c:remove var="isExistImg"/>
 	          	
 		          <div class="card-body col-12 py-2 ml-1 d-flex flex-column align-items-start justify-content-center"> 
-		            <p class="card-text d-block text-black-50 mb-1 w-100 pr-2" style="font-size: 10px;"><span>★ ${ review.review_star }</span><span class="text-right float-right">${ review.review_date }</span></p>
-				    <h5 class="card-title font-weight-bold" style="font-size: 14px;">${ goodsnamelist.get(review.goods_idx) }</h5>
+		            <p class="card-text d-block text-black-50 mb-1 w-100 pr-2" style="font-size: 10px;"><span>★ ${ review.reviewStar }</span><span class="text-right float-right">${ review.review_date }</span></p>
+				    <h5 class="card-title font-weight-bold" style="font-size: 14px;">${ review.getGoodsEntity().getGoodsName() }</h5>
 		            <c:remove var="name"/>
-		            <p class="card-text w-100 pr-2" style="font-size:12px;">${ review.review_contents }</p>
+		            <p class="card-text w-100 pr-2" style="font-size:12px;">${ review.reviewContents }</p>
 		             <span class="btn btn-primary font-secondary align-self-center mr-2" id="${ review.review_idx }" onclick="popupHideAndShowForReview(event);" style="cursor: pointer;">답글달기</span> 
-		             <c:if test="${ review.review_isreplied == 1 }"><span class="text-muted align-self-end mr-2"><small>답글 등록됨</small></span></c:if>         
+		             <c:if test="${ review.reviewIsReplied == 1 }"><span class="text-muted align-self-end mr-2"><small>답글 등록됨</small></span></c:if>
 		          </div>
 	          
 	        	</div>
@@ -98,17 +98,17 @@
 		      <nav class="mx-auto">
 		        <ul class="pagination justify-content-center ">
 					<!-- 현재 페이지가 페이지표시기의 페이지 표시 수 보다 작으면 뒤로가기버튼 disable -->
-		          <li class="page-item <c:if test="${ pages.currentPage <= 5 }">disabled</c:if>">
-		            <a class="page-link" href="review?currentPage=${ pages.beginPagenation - 1}">&lang;</a>
+		          <li class="page-item <c:if test="${ pages.number <= 5 || pages.isFirstPage}">disabled</c:if>">
+		            <a class="page-link" href="review?page=${ pages.beginPage - 2}&size=10">&lang;</a>
 		          </li>
-				  <c:forEach var="page" begin="${ pages.beginPagenation }" end="${ pages.endPagenation }" step="1">
-		          <li class="page-item <c:if test="${ pages.currentPage == page }">active</c:if>">
-		            <a class="page-link" href="review?currentPage=${ page }">${ page }</a>
+				  <c:forEach var="page" begin="${ pages.beginPagen }" end="${ pages.endPage }" step="1">
+		          <li class="page-item <c:if test="${ pages.number == page }">active</c:if>">
+		            <a class="page-link" href="review?page=${ page }&size=10">${ page }</a>
 		          </li>
 		          </c:forEach>
 		          <!-- 마지막페이지까지 표시되면 앞으로 가기 표시 안됨 -->
-		          <li class="page-item <c:if test="${ pages.countOfPages eq pages.endPagenation }">disabled</c:if>">
-		            <a class="page-link" href="review?currentPage=${ pages.endPagenation+1}">&rang;</a>
+		          <li class="page-item <c:if test="${ pages.totalPages+1 eq pages.endPage || pages.hasNextPage == false }">disabled</c:if>">
+		            <a class="page-link" href="review?page=${ pages.endPage}&size=10">&rang;</a>
 		          </li>
 		        </ul>
 		      </nav>

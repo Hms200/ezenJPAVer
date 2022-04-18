@@ -39,8 +39,8 @@
 
             <!-- 구매일 -->
            <div class="d-flex font-primary justify-content-between text-black-50 mt-3" style="height: 40px;">
-           	<span class="text-left">구매번호 - ${ purchase.purchase_idx }</span>
-           	<span class="test-right">${ purchase.purchase_date }</span>
+           	<span class="text-left">구매번호 - ${ purchase.purchaseIdx }</span>
+           	<span class="test-right">${ purchase.purchaseDate }</span>
            </div> 
 
             <!-- 상품정보 반복-->
@@ -50,12 +50,9 @@
 				
                 <!-- thumbnail -->
                 <div class="col-4">
-                	<c:forEach var="goods" items="${ goodslist }">
-                		<c:if test="${ cart.goods_idx == goods.goods_idx }">
-                		<c:set var="thumb" value="${ goods.goods_thumb }" />
-                		<c:set var="name" value="${ goods.goods_name }" />
+                		<c:set var="thumb" value="${ cart.getGoodsEntity().getGoodsThumb() }" />
+                		<c:set var="name" value="${ cart.getGoodsEntity().getGoodsName() }" />
                 		</c:if>
-                	</c:forEach>
                     <img class="img-fluid" src="${ thumb }" alt="">
                 </div>
                 <!-- 정보 -->
@@ -64,15 +61,15 @@
                         ${ name }
                     </div>
                     <c:forEach var="options" items="${ optionlist }">
-                    	<c:if test="${ cart.option_idx == options.option_idx }">
-                   		<c:set var="option" value="${ options.option_name }+${ options.option_price }" />
+                    	<c:if test="${ cart.getOptionEntity().getOptionIdx() == options.optionIdx }">
+                   		<c:set var="option" value="${ options.optionName }+${ options.optionPrice }" />
                     	</c:if>
                     </c:forEach>
                     <div class="my-1">
                         ${ option }
                     </div>
                     <div class="my-1">
-                        ${ cart.cart_total_price }
+                        ${ cart.cartTotalPrice }
                     </div>
                 </div>
                 
@@ -89,32 +86,32 @@
             
                 <label class="row text-center w-100 ml-2 font-weight-bold" style="line-height: 38px;">
                     수 &numsp;&numsp; 령 &numsp;&numsp; 인
-                    <input class="form-control-plaintext text-right col-7 mx-auto font-weight-normal" type="text" name="purchase_buyer_name" value="${ purchase.purchase_buyer_name }" readonly>
+                    <input class="form-control-plaintext text-right col-7 mx-auto font-weight-normal" type="text" name="purchase_buyer_name" value="${ purchase.purchaseBuyerName }" readonly>
                 </label>
                 <label class="row text-center w-100 ml-2 font-weight-bold text-dark-50" style="line-height: 38px;">
                     연 &numsp;&numsp; 락 &numsp;&numsp;  처 
-                    <input class="form-control-plaintext text-right col-7 mx-auto font-weight-normal" type="text" name="purchase_buyer_phone" value="${ purchase.purchase_buyer_phone }" readonly>
+                    <input class="form-control-plaintext text-right col-7 mx-auto font-weight-normal" type="text" name="purchase_buyer_phone" value="${ purchase.purchaseBuyerPhone }" readonly>
                 </label>
                 <label class="row text-center w-100 ml-2 font-weight-bold text-dark-50" style="line-height: 38px;">
                     주   &numsp;&numsp;&numsp;&numsp;&numsp;&numsp;  소 
-                    <input class="form-control-plaintext text-right col-7 mx-auto font-weight-normal" type="text" name="purchase_buyer_address" value="${ purchase.purchase_buyer_address }" readonly>
+                    <input class="form-control-plaintext text-right col-7 mx-auto font-weight-normal" type="text" name="purchase_buyer_address" value="${ purchase.purchaseBuyerAddress }" readonly>
                 </label>
                 <label class="row text-center w-100 ml-2 font-weight-bold text-dark-50 mb-4" style="line-height: 38px;">
                     배 &numsp;송 &numsp;매 &numsp;모 
-                    <input class="form-control-plaintext text-right col-7 mx-auto font-weight-normal" type="text" name="purchase_buyer_request" value="${ purchase.purchase_buyer_request }" readonly>
+                    <input class="form-control-plaintext text-right col-7 mx-auto font-weight-normal" type="text" name="purchase_buyer_request" value="${ purchase.purchaseBuyerRequest }" readonly>
                 </label>
 
                 <label class="row text-center w-100 ml-2 font-weight-bold text-dark-50" style="line-height: 38px;">
                     총 &numsp;결제 &numsp;금액 &numsp;&numsp;&numsp;&numsp;&numsp;
-                    <input class="form-control-plaintext text-right col-5 mx-auto font-weight-normal" type="text" name="purchase_total_price" value="${ purchase.purchase_total_price }" readonly>
+                    <input class="form-control-plaintext text-right col-5 mx-auto font-weight-normal" type="text" name="purchase_total_price" value="${ purchase.purchaseTotalPrice }" readonly>
                 </label>
                 <label class="row text-center w-100 ml-2 font-weight-bold text-dark-50" style="line-height: 38px;">
                     &numsp;결제 &numsp;&numsp;수단 &numsp;&numsp;&numsp;&numsp;&numsp;&numsp;
-                    <input class="form-control-plaintext text-right col-5 mx-auto font-weight-normal" type="text" name="purchase_total_price" value="${ purchase.purchase_payment }" readonly>
+                    <input class="form-control-plaintext text-right col-5 mx-auto font-weight-normal" type="text" name="purchase_total_price" value="${ purchase.purchasePayment }" readonly>
                 </label>
                 <label class="row text-center w-100 ml-2 font-weight-bold text-dark-50" style="line-height: 38px;">
                     &numsp;현재 &numsp;&numsp;상태 &numsp;&numsp;&numsp;&numsp;&numsp;&numsp;
-                    <input class="form-control-plaintext text-right col-5 mx-auto font-weight-normal" type="text" name="purchase_statement" value="${ purchase.purchase_statement }" readonly>
+                    <input class="form-control-plaintext text-right col-5 mx-auto font-weight-normal" type="text" name="purchase_statement" value="${ purchase.purchaseStatement }" readonly>
                 </label>
                 <!-- 주문상태별 value값 정해야함. -->
                 <select class="form-control col-6 mx-auto mt-3" name="purchase_statement" style="flex:none;">
@@ -128,7 +125,7 @@
                     
                     
                 </select>
-				<input type="hidden" id="purchase_idx" value="${ purchase.purchase_idx }">
+				<input type="hidden" id="purchase_idx" value="${ purchase.purchaseIdx }">
                 <!-- 버튼 그룹 -->
                 <div class="w-100 d-flex flex-wrap flex-row justify-content-around mt-4" style="height: 125px;">
                     <button class="btn btn-outline-primary text-primary col-4 my-auto mx-1" id="교환접수" onclick="updateTransactionStatement(event)">교환접수</button>
