@@ -274,7 +274,6 @@ public class AdminService {
         if(purchaseEntityOptional.isPresent()){
             log.info("{} 로 필터링한 목록을 표시힙니다.", statement);
             model.addAttribute("purchaselist", purchaseEntityOptional.get());
-            return model;
         }else{
             if(statement.equals("최신순")){
                 log.info("최신순으로 목록을 표시합니다.");
@@ -287,8 +286,8 @@ public class AdminService {
                 purchaseList = purchaseRepository.findAll();
             }
             model.addAttribute("purchaselist", purchaseList);
-            return model;
         }
+        return model;
     }
 
     public Model transaction(Pageable pageable, Model model){

@@ -62,8 +62,9 @@ public class EntityUpdateUtil {
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
-        // update 할 field가 Entity형 인 경우 Repository 호출하여 join된 Entity 가져와서 setter로 update 할 entity에 넣어줌
-                    }if(method.getName().contains("set") && method.getName().contains("Entity") &&
+                    }
+                    // update 할 field가 Entity형 인 경우 Repository 호출하여 join된 Entity 가져와서 setter로 update 할 entity에 넣어줌
+                    if(method.getName().contains("set") && method.getName().contains("Entity") &&
                         method.getName().replace("set", "").replace("Entity", "").toUpperCase()
                                 .equals(name.replace("IDX",""))){
 
